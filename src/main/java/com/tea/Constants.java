@@ -8,6 +8,6 @@ public interface Constants {
 	String POST = "POST";
 
 	String AJAX_HEADER = "X-Requested-With";
-	String AJAX_CONTENT_TYPE = "application/json";
+	String AJAX_CONTENT_TYPE = "application/json;charset=UTF-8";
 
 }

@@ -1,6 +1,7 @@
 package com.tea.servlet;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tea.Constants;
 import com.tea.dbHandle.GoodsHandle;
@@ -22,9 +24,10 @@ import com.tea.tools.WebUtils;
 
 @SuppressWarnings("serial")
 public abstract class BaseServlet extends HttpServlet {
-	private static final ObjectMapper MAPPER = new ObjectMapper();
+	protected static final ObjectMapper MAPPER = new ObjectMapper();
 	protected GoodsHandle goodsHandle = BeanFactory.getInstance("goodsHandle");
 	protected UserHandle userHandle = BeanFactory.getInstance("userHandle");
+
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,13 +45,15 @@ public abstract class BaseServlet extends HttpServlet {
 			Method method = clazz.getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
 			// 执行
 			returnValue = method.invoke(this, request, response);
-		} catch (Exception e) {
+		} 
+		catch (InvocationTargetException e) {
 			e.printStackTrace();
 			// ajax请求
 			if (isAjax) {
+				response.setContentType(Constants.AJAX_CONTENT_TYPE);
 				response.getOutputStream()
 						.write(MAPPER.writeValueAsString(
-								new ExceptionInfo(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getMessage()))
+								new ExceptionInfo(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getTargetException().getMessage()))
 								.getBytes(Charset.defaultCharset()));
 				response.setStatus(510);
 				response.getOutputStream().flush();
@@ -56,9 +61,12 @@ public abstract class BaseServlet extends HttpServlet {
 			}
 			// 跳转到错误页面
 			returnValue = "/error.jsp";
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		if (isAjax) {
 			response.setContentType(Constants.AJAX_CONTENT_TYPE);
+			MAPPER.setSerializationInclusion(Include.NON_NULL);  
 			MAPPER.writeValue(response.getOutputStream(), returnValue);
 			return;
 		}

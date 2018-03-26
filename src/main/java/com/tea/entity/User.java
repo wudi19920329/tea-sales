@@ -9,6 +9,10 @@ public class User {
 	private String address;
 	private String email;
 	private String password;
+	
+	public User() {
+		super();
+	}
 
 	public User(String realName, String phone, String address, String email, String password) {
 		super();

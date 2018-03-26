@@ -41,7 +41,7 @@
 			<ul>
 				<li class="click_menu"><a href="#">我的账户<i class="fa fa-angle-down"></i></a>
 					<ul class="click_menu_show">
-						<li><a href="#" id="registerLink" onClick="javascript:location.href='/register?method=preloadRegister';">注册</a></li>
+						<li><a href="#" id="registerLink" onClick="javascript:location.href='../../../../registerTemplate.jsp';">注册</a></li>
 						<li><a href="#" id="registerLink" onClick="javascript:location.href='<c:url value="/shop/customer/customLogon.html" />';">登陆</a></li>
 					</ul>
 				</li>
