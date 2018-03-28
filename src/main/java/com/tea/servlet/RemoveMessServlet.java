@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.tea.dbHandle.MessHandle;
 import com.tea.entity.User;
-import com.tea.tools.LoginVerify;
+import com.tea.utils.LoginVerify;
 
 //删除一条消息
 @WebServlet("/RemoveMessServlet")

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.tea.dbHandle.UserHandle;
 import com.tea.entity.User;
-import com.tea.tools.MD5;
+import com.tea.utils.MD5;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {

@@ -15,7 +15,16 @@
 	</error-page>
 
 
+	<!-- <servlet>
+		<servlet-name>Tiles Dispatch Servlet</servlet-name>
+		<servlet-class>org.apache.tiles.web.util.TilesDispatchServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Tiles Dispatch Servlet</servlet-name>
+		<url-pattern>*.tiles</url-pattern>
+	</servlet-mapping>
+	Bootstraps the root web application context before servlet initialization
 	<listener>
 		<listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
-	</listener>
+	</listener> -->
 </web-app>

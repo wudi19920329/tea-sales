@@ -1,6 +1,6 @@
 package com.tea.entity;
 
-import com.tea.tools.MD5;
+import com.tea.utils.MD5;
 
 public class User {
 	private int id;
@@ -9,18 +9,28 @@ public class User {
 	private String address;
 	private String email;
 	private String password;
-	
+	private String nickName;
+
 	public User() {
 		super();
 	}
 
-	public User(String realName, String phone, String address, String email, String password) {
+	public User(String realName, String phone, String address, String email, String password, String nickName) {
 		super();
 		this.realName = realName;
+		this.nickName = nickName;
 		this.phone = phone;
 		this.address = address;
 		this.email = email;
 		this.password = MD5.getMD5(MD5.getMD5(password));
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public int getId() {

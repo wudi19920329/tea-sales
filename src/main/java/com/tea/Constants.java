@@ -6,8 +6,11 @@ public interface Constants {
 	String ISO_8859_1 = "iso-8859-1";
 	String GET = "GET";
 	String POST = "POST";
-
 	String AJAX_HEADER = "X-Requested-With";
 	String AJAX_CONTENT_TYPE = "application/json;charset=UTF-8";
+
+	String TEA_CUSTOMER = "TEA_CUSTOMER";
+	String COOKIE_NAME_USER = "tea_user";
+	String MERCHANT_STORE = "DEFAULT";
 
 }

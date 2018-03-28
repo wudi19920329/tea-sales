@@ -1,4 +1,4 @@
-package com.tea.tools;
+package com.tea.utils;
 
 public class MD5 {  
     	public static String getMD5(String password) {  

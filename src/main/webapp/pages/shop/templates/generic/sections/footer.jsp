@@ -44,7 +44,7 @@
 					<div class="footer-wrapper">
 						<ul class="usefull-link">
 							<li class="active"><a href="/shop">主页</a></li>
-							<c:set var="categorys" value="<%=com.tea.enums.TeaCategory.values()%>"/>
+							<c:set var="categorys" value="<%=com.tea.enums.Category.values()%>"/>
 							<c:forEach var="category" items="${categorys}">
 								<li><a href="/shop/category/handbags.html/ref=c:1"
 								class="current"> <span class="name">${category.getDescription()}</span>

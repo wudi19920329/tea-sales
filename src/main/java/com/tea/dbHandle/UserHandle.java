@@ -8,16 +8,17 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.tea.entity.User;
-import com.tea.tools.JdbcUtils;
+import com.tea.utils.JdbcUtils;
 
 public class UserHandle {
 
 	private QueryRunner qr = JdbcUtils.getQueryRunner();
 
-	public void add(User user) {
-		String sql = "INSERT INTO user(real_name,phone,address,email,password) VALUES (?,?,?,?,?)";
+	public void insert(User user) {
+		String sql = "INSERT INTO user(real_name,nick_name,phone,address,email,password) VALUES (?,?,?,?,?,?)";
 		try {
-			qr.update(sql, user.getRealName(), user.getPhone(), user.getAddress(), user.getEmail(), user.getPassword());
+			qr.update(sql, user.getRealName(), user.getNickName(), user.getPhone(), user.getAddress(), user.getEmail(),
+					user.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -25,17 +26,17 @@ public class UserHandle {
 	}
 
 	public void update(User user) {
-		String sql = "update user set real_name=?,phone=?,address=?,email=?,password=? where id=?";
+		String sql = "update user set real_name=?,nick_name=?,phone=?,address=?,email=?,password=? where id=?";
 		try {
-			qr.update(sql, user.getRealName(), user.getPhone(), user.getAddress(), user.getEmail(), user.getPassword(),
-					user.getId());
+			qr.update(sql, user.getRealName(), user.getNickName(), user.getPhone(), user.getAddress(), user.getEmail(),
+					user.getPassword(), user.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public List<User> query() {
-		String sql = "SELECT id,real_name,phone,address,email,password FROM user WHERE real_name LIKE ? OR email LIKE ?";
+		String sql = "SELECT id,real_name,nick_name,phone,address,email,password FROM user WHERE real_name LIKE ? OR email LIKE ?";
 		try {
 			return qr.query(sql, new BeanListHandler<User>(User.class));
 		} catch (Exception e) {
@@ -44,18 +45,27 @@ public class UserHandle {
 	}
 
 	public User queryById(int id) {
-		String sql = "SELECT id,real_name,phone,address,email,password FROM user WHERE id=?";
+		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,email,password FROM user WHERE id=?";
 		try {
 			return qr.query(sql, new BeanHandler<User>(User.class), id);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public User queryByEmail(String email) {
-		String sql = "SELECT id,real_name,phone,address,email,password FROM user WHERE email=?";
+		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,email,password FROM user WHERE email=?";
 		try {
 			return qr.query(sql, new BeanHandler<User>(User.class), email);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public User queryByRealName(String realName) {
+		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,email,password FROM user WHERE real_name=?";
+		try {
+			return qr.query(sql, new BeanHandler<User>(User.class), realName);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

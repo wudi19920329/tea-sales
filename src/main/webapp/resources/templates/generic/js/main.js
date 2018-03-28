@@ -1,14 +1,6 @@
 (function($) {
     "use strict";
 
-    $(".click_menu").on('click', function() {
-        $(".click_menu_show").slideToggle(400)
-    });
-
-    $(".click_menu2").on('click', function() {
-        $(".click_menu_show2").slideToggle(400)
-    });
-
     /*----------------------------
       Sticky Header
     ------------------------------ */

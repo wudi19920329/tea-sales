@@ -3,7 +3,7 @@
 
 	$(function(){
 		log('Check for customer account');
-		if(supportsCustomerLogin()) {
+		/*if(supportsCustomerLogin()) {
 			if($('#customerNotLoggedInAccountTemplate')) {
 				var customerNotLoggedInTemplate = Hogan.compile(document.getElementById("customerNotLoggedInAccountTemplate").innerHTML);
 				var customerNotLoggedInRendered = customerNotLoggedInTemplate.render('');
@@ -11,7 +11,7 @@
 				$('#customerAccount').append(customerNotLoggedInRendered);
 			}
 			initUserAccount();
-		}
+		}*/
 
 	});
 	
@@ -19,18 +19,23 @@
 		var userName = getUserName();
 		log('userName ' + userName);
 		if(userName!=null) {
-			displayUserAccount(userName);
+			//displayUserAccount(userName);
 		}
 	}
 	
 
 
 
-function displayUserAccount(userName){
-	url = getContextPath() + '/shop/customer/accountSummary.json?userName='+userName;
+function displayUserAccount(realName){
+	var params = {
+		"method":"accountSummary",
+		"realName":realName
+	};
 	$.ajax({  
-		 type: 'GET',  
-		 url: url,  
+		data:params,
+		type : 'POST',
+		dataType : "json",
+		url : '/user/json',
 		 error: function(xhr) { 
 			if(xhr.status==401) {//not authenticated
 				removeUserName();
@@ -57,14 +62,13 @@ function displayUserAccount(userName){
 
 /** returns the user name from the cookie **/
 function getUserName() {
-	
-	var user = $.cookie('user'); //should be [storecode_userName]
+	var user = $.cookie('tea_user'); //should be [storecode_userName]
 	var code = new Array();
 	
 	if(user!=null) {
 		user = user.replace(/['"]+/g, '');
 		code = user.split('_');
-		if(code[0]==getMerchantStoreCode()) {
+		if(code[0]=="DEFAULT") {
 			return code[1];
 		}
 	}

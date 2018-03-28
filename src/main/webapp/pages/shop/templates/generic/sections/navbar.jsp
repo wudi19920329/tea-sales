@@ -15,7 +15,7 @@
 <script type="text/javascript">
 //***** Search code *****
 $(document).ready(function() { 
-
+/* 
     //post search form
    $(".searchButton").click(function(e){
 			var searchQuery = $('#searchField').val();
@@ -84,7 +84,7 @@ $(document).ready(function() {
 	    templates: {
 	    	suggestion: function (data) { return searchTemplate.render(data); }
 	    }
-	});
+	}); */
 
 });
 
@@ -99,44 +99,13 @@ $(document).ready(function() {
 				<div class="mainmenu hidden-xs">
 					<nav>
 						<ul>
-							<c:set var="categorys" value="<%=com.tea.enums.TeaCategory.values()%>"/>
+							<c:set var="categorys" value="<%=com.tea.enums.Category.values()%>"/>
 							<c:forEach var="category" items="${categorys}">
-							    <li style="width:100px"><a href="#"><c:out
+							    <li style="width:100px"><a href="/pages/shop/templates/generic/pages/category.jsp"><c:out
 											value="${category.getDescription()}" /></a></li>
 							</c:forEach>
 							
 							
-						</ul>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- mobile menu -->
-<div class="mobile-menu-area hidden-sm hidden-md hidden-lg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="mobile-menu">
-					<nav id="mobile-menu">
-						<ul>
-							<c:set var="code" value="${category.code}" />
-							<c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
-								<li
-									class="<sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a
-									href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out
-											value="${category.description.name}" /></a> <c:if
-										test="${fn:length(category.children)>0}">
-										<ul>
-											<c:forEach items="${category.children}" var="child">
-												<li><a
-													href="<c:url value="/shop/category/${child.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${child.id}"/>"><c:out
-															value="${child.description.name}" /></a></li>
-											</c:forEach>
-										</ul>
-									</c:if></li>
-							</c:forEach>
 						</ul>
 					</nav>
 				</div>

@@ -10,22 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.http.HttpStatus;
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tea.Constants;
-import com.tea.dbHandle.GoodsHandle;
+import com.tea.dbHandle.ProductHandle;
 import com.tea.dbHandle.UserHandle;
 import com.tea.exception.ExceptionInfo;
 import com.tea.factory.BeanFactory;
-import com.tea.tools.WebUtils;
+import com.tea.utils.WebUtils;
 
 @SuppressWarnings("serial")
 public abstract class BaseServlet extends HttpServlet {
 	protected static final ObjectMapper MAPPER = new ObjectMapper();
-	protected GoodsHandle goodsHandle = BeanFactory.getInstance("goodsHandle");
+	protected ProductHandle productHandle = BeanFactory.getInstance("productHandle");
 	protected UserHandle userHandle = BeanFactory.getInstance("userHandle");
 
 
@@ -53,7 +52,7 @@ public abstract class BaseServlet extends HttpServlet {
 				response.setContentType(Constants.AJAX_CONTENT_TYPE);
 				response.getOutputStream()
 						.write(MAPPER.writeValueAsString(
-								new ExceptionInfo(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getTargetException().getMessage()))
+								new ExceptionInfo(String.valueOf(400), e.getTargetException().getMessage()))
 								.getBytes(Charset.defaultCharset()));
 				response.setStatus(510);
 				response.getOutputStream().flush();

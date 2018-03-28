@@ -4,20 +4,34 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
- 	
- 	<definition name="tiles.index.definition" template="/pages/shop/templates/generic/catalogLayout.jsp">
- 		<put-attribute name="header" value="/pages/shop/templates/generic/sections/header.jsp" />
-  		<put-attribute name="navbar" value="/pages/shop/templates/generic/sections/navbar.jsp" /> 
-  		<put-attribute name="body" value="/pages/shop/templates/generic/pages/landing.jsp" />
-  		<put-attribute name="footer" value="/pages/shop/templates/generic/sections/footer.jsp" />
-  	</definition>
+	<definition name="tiles.index.definition" template="/pages/shop/templates/generic/pages/index.jsp">
+        <put-attribute name="header" value="/pages/shop/templates/generic/sections/header.jsp" />
+        <put-attribute name="navbar" value="/pages/shop/templates/generic/sections/navbar.jsp" /> 
+        <put-attribute name="footer" value="/pages/shop/templates/generic/sections/footer.jsp" />
+    </definition>
+	
   	
-    <definition name="tiles.register.definition" template="/pages/shop/templates/generic/catalogLayout.jsp">
+ <!--    <definition name="tiles.register.definition" template="/pages/shop/templates/generic/catalogLayout.jsp">
   	  	<put-attribute name="header" value="/pages/shop/templates/generic/sections/header.jsp" />
   		<put-attribute name="navbar" value="/pages/shop/templates/generic/sections/navbar.jsp" />
   		<put-attribute name="body" value="/pages/shop/templates/generic/pages/register.jsp" />
   		<put-attribute name="footer" value="/pages/shop/templates/generic/sections/footer.jsp" />
   	</definition>
+  	
+	<definition name="tiles.customer.definition" template="/pages/shop/templates/generic/catalogLayout.jsp">
+		<put-attribute name="header" value="/pages/shop/templates/generic/sections/header.jsp" />
+		<put-attribute name="navbar" value="/pages/shop/templates/generic/sections/navbar.jsp" /> 
+		<put-attribute name="body" value="/pages/shop/templates/generic/pages/dashboard.jsp" />
+		<put-attribute name="footer" value="/pages/shop/templates/generic/sections/footer.jsp" />
+  	</definition>
+  	
+  	
+  	<definition name="tiles.address.definition" template="/pages/shop/templates/generic/catalogLayout.jsp">
+	  	<put-attribute name="header" value="/pages/shop/templates/generic/sections/header.jsp" />
+		<put-attribute name="navbar" value="/pages/shop/templates/generic/sections/navbar.jsp" />
+		<put-attribute name="body" value="/pages/shop/templates/generic/pages/address.jsp" />
+		<put-attribute name="footer" value="/pages/shop/templates/generic/sections/footer.jsp" />
+  	</definition> -->
   	
   	<!-- <definition name="category.*" template="/pages/shop/templates/{1}/catalogLayout.jsp">
   		 <put-attribute name="header" value="/pages/shop/templates/{1}/sections/header.jsp" />
@@ -55,12 +69,7 @@
   		<put-attribute name="footer" value="/pages/shop/templates/{1}/sections/footer.jsp" />
   	</definition>
   	
-  	<definition name="customer.*" template="/pages/shop/templates/{1}/catalogLayout.jsp">
-  		 <put-attribute name="header" value="/pages/shop/templates/{1}/sections/header.jsp" />
-  		<put-attribute name="navbar" value="/pages/shop/templates/{1}/sections/navbar.jsp" /> 
-  		<put-attribute name="body" value="/pages/shop/templates/{1}/pages/customer.jsp" />
-  		<put-attribute name="footer" value="/pages/shop/templates/{1}/sections/footer.jsp" />
-  	</definition>
+  
   	
   	<definition name="content.*" template="/pages/shop/templates/{1}/catalogLayout.jsp">
   		 <put-attribute name="header" value="/pages/shop/templates/{1}/sections/header.jsp" />
@@ -131,12 +140,7 @@
   		<put-attribute name="footer" value="/pages/shop/templates/{1}/sections/footer.jsp" />
   	</definition>
   	
-  	<definition name="customerAddress.*" template="/pages/shop/templates/{1}/catalogLayout.jsp">
-  	  	<put-attribute name="header" value="/pages/shop/templates/{1}/sections/header.jsp" />
-  		<put-attribute name="navbar" value="/pages/shop/templates/{1}/sections/navbar.jsp" />
-  		<put-attribute name="body" value="/pages/shop/common/customer/address.jsp" />
-  		<put-attribute name="footer" value="/pages/shop/templates/{1}/sections/footer.jsp" />
-  	</definition>
+
   	
   	<definition name="editCustomerAddress.*" template="/pages/shop/templates/{1}/catalogLayout.jsp">
   	  	<put-attribute name="header" value="/pages/shop/templates/{1}/sections/header.jsp" />

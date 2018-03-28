@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.tea.dbHandle.UserHandle;
 import com.tea.entity.User;
-import com.tea.tools.LoginVerify;
-import com.tea.tools.MD5;
+import com.tea.utils.LoginVerify;
+import com.tea.utils.MD5;
 
 /**
  * Servlet implementation class UpdateUserInfoServlet

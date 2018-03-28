@@ -20,38 +20,12 @@
 
 <!-- Customer account menu logged in customer will display in customerAccount placeholder -->
 <script type="text/html" id="customerLoggedInAccountTemplate">
-			<ul>
-				<li class="click_menu"><a href="#">欢迎光临<span>{{firstName}}</span><i class="fa fa-angle-down"></i></a>
-					<ul class="click_menu_show">
-						<li><a href="#" onClick="javascript:location.href='<c:url value="/shop/customer/dashboard.html" />';" href="#">我的账户</a></li>
-						<li><a href="#" onClick="javascript:location.href='<c:url value="/shop/customer/logout" />';" href="#">退出</a></li>
-					</ul>
-				</li>
-			</ul>
-			<script type="text/javascript">
-                (function($) {
-    			$(".click_menu").on('click', function() {
-        			$(".click_menu_show").slideToggle(400)
-    			});
-                })(jQuery);
+		
 </script>
 
 <!-- Customer account menu not logged in customer will display in customerAccount placeholder -->
 <script type="text/html" id="customerNotLoggedInAccountTemplate">
-			<ul>
-				<li class="click_menu"><a href="#">我的账户<i class="fa fa-angle-down"></i></a>
-					<ul class="click_menu_show">
-						<li><a href="#" id="registerLink" onClick="javascript:location.href='../../../../registerTemplate.jsp';">注册</a></li>
-						<li><a href="#" id="registerLink" onClick="javascript:location.href='<c:url value="/shop/customer/customLogon.html" />';">登陆</a></li>
-					</ul>
-				</li>
-			</ul>
-			<script type="text/javascript">
-                (function($) {
-    			$(".click_menu").on('click', function() {
-        			$(".click_menu_show").slideToggle(400)
-    			});
-                })(jQuery);
+			
 </script>
 
 <!-- Mini shopping cart JS template -->
@@ -108,7 +82,50 @@
 				<div class="col-lg-9 col-md-8 col-sm-8">
 					<!-- placeholder for customer account -->
 					<div class="header-top-left" id="customerAccount"
-						style="margin-left: 20px;"></div>
+						style="margin-left: 20px;">
+						<c:choose>
+
+							<c:when test="${sessionScope.TEA_CUSTOMER!=null}">   
+								<ul>
+									<li class="click_menu"><a href="#">欢迎光临&nbsp;<span>${sessionScope.TEA_CUSTOMER.nickName}</span><i class="fa fa-angle-down"></i></a>
+										<ul class="click_menu_show">
+											<li><a href="/pages/shop/templates/generic/pages/dashboard.jsp" >我的账户</a></li>
+											<li><a href="#" onClick="javascript:location.href='<c:url value="/shop/customer/logout" />';" href="#">退出</a></li>
+										</ul>
+									</li>
+								</ul>
+								<script type="text/javascript">
+								
+					                (function($) {
+						    			$(".click_menu").on('click', function() {
+						        			$(".click_menu_show").slideToggle(400)
+						    			});
+					                })(jQuery);
+					            </script>    
+						   	</c:when>
+						   
+						   	<c:otherwise>
+						   		<ul>
+									<li class="click_menu"><a href="javascript:void(0);">我的账户<i class="fa fa-angle-down"></i></a>
+										<ul class="click_menu_show">
+											<li><a href="javascript:void(0);" id="registerLink" onClick="javascript:location.href='/pages/shop/templates/generic/pages/register.jsp';">注册</a></li>
+											<li><a href="javascript:void(0);" id="registerLink" onClick="javascript:location.href='/pages/shop/templates/generic/pages/logon.jsp';">登陆</a></li>
+										</ul>
+									</li>
+								</ul>
+								<script type="text/javascript">
+					                (function($) {
+					    			$(".click_menu").on('click', function() {
+					        			$(".click_menu_show").slideToggle(400)
+					    			});
+					                })(jQuery); 
+					            </script>       
+						   	</c:otherwise>
+						  
+						</c:choose>	
+						
+						
+					</div>
 
 					<button class="btn btn-default header-left-menu type=" button"=""
 						onclick="javascript:location.href='/shop/store/contactus.html';"
@@ -132,7 +149,7 @@
 					<!-- logo -->
 					<div class="logo">
 						<!--  use merchant store logo -->
-						<a class="grey store-name" href="/shop/"> <img
+						<a class="grey store-name" href="/"> <img
 							class="logoImage"
 							src="/resources/templates/generic/img/tea-logo.png">
 						</a>
