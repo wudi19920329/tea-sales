@@ -275,7 +275,7 @@ response.setDateHeader ("Expires", -1);
 						   	data:params,
 							type : 'POST',
 							dataType : "json",
-							url : '/user',
+							url : '/customer',
 							success : function(productList) {
 								window.location.href = "dashboard.jsp";
 							},

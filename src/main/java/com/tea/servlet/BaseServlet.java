@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tea.Constants;
 import com.tea.dbHandle.ProductHandle;
-import com.tea.dbHandle.UserHandle;
+import com.tea.dbHandle.ShoppingCartHandle;
+import com.tea.dbHandle.ShoppingCartItemHandle;
+import com.tea.dbHandle.CustomerHandle;
 import com.tea.exception.ExceptionInfo;
 import com.tea.factory.BeanFactory;
 import com.tea.utils.WebUtils;
@@ -25,8 +27,9 @@ import com.tea.utils.WebUtils;
 public abstract class BaseServlet extends HttpServlet {
 	protected static final ObjectMapper MAPPER = new ObjectMapper();
 	protected ProductHandle productHandle = BeanFactory.getInstance("productHandle");
-	protected UserHandle userHandle = BeanFactory.getInstance("userHandle");
-
+	protected CustomerHandle customerHandle = BeanFactory.getInstance("customerHandle");
+	protected ShoppingCartHandle shoppingCartHandle = BeanFactory.getInstance("shoppingCartHandle");
+	protected ShoppingCartItemHandle shoppingCartItemHandle = BeanFactory.getInstance("shoppingCartItemHandle");
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,15 +47,15 @@ public abstract class BaseServlet extends HttpServlet {
 			Method method = clazz.getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
 			// 执行
 			returnValue = method.invoke(this, request, response);
-		} 
-		catch (InvocationTargetException e) {
+		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 			// ajax请求
 			if (isAjax) {
 				response.setContentType(Constants.AJAX_CONTENT_TYPE);
 				response.getOutputStream()
-						.write(MAPPER.writeValueAsString(
-								new ExceptionInfo(String.valueOf(400), e.getTargetException().getMessage()))
+						.write(MAPPER
+								.writeValueAsString(
+										new ExceptionInfo(String.valueOf(400), e.getTargetException().getMessage()))
 								.getBytes(Charset.defaultCharset()));
 				response.setStatus(510);
 				response.getOutputStream().flush();
@@ -60,12 +63,12 @@ public abstract class BaseServlet extends HttpServlet {
 			}
 			// 跳转到错误页面
 			returnValue = "/error.jsp";
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (isAjax) {
 			response.setContentType(Constants.AJAX_CONTENT_TYPE);
-			MAPPER.setSerializationInclusion(Include.NON_NULL);  
+			MAPPER.setSerializationInclusion(Include.NON_NULL);
 			MAPPER.writeValue(response.getOutputStream(), returnValue);
 			return;
 		}

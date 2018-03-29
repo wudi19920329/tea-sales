@@ -20,11 +20,11 @@ public class ProductHandle {
 	private QueryRunner qr = JdbcUtils.getQueryRunner();
 
 	public void insert(Product product) {
-		String sql = " INSERT t_product(image,category,varieties,inventory,specification,price,content,status,create_date,discount_price,discounted) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = " INSERT t_product(image,category,varieties,inventory,specification,price,content,status,create_time,discount_price,discounted) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 		try {
 			qr.update(sql, product.getImage(), product.getCategory().name(), product.getVarieties().name(),
 					product.getInventory(), product.getSpecification().name(), product.getPrice(), product.getContent(),
-					product.getStates().name(), product.getCreatDate(), product.getDiscountPrice(),
+					product.getStatus().name(), product.getCreateTime(), product.getDiscountPrice(),
 					product.getDiscountPrice());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -41,11 +41,11 @@ public class ProductHandle {
 	}
 
 	public void update(Product product) {
-		String sql = "UPDATE t_product SET image=?,category=?,varieties=?,inventory=?,specification=?,price=?,content=?,status=?,create_date=?,discount_price=?,discounted=? WHERE id =?";
+		String sql = "UPDATE t_product SET image=?,category=?,varieties=?,inventory=?,specification=?,price=?,content=?,status=?,create_time=?,discount_price=?,discounted=? WHERE id =?";
 		try {
 			qr.update(sql, product.getImage(), product.getCategory().name(), product.getVarieties().name(),
 					product.getInventory(), product.getSpecification().name(), product.getPrice(), product.getContent(),
-					product.getStates().name(), product.getCreatDate(), product.getDiscountPrice(),
+					product.getStatus().name(), product.getCreateTime(), product.getDiscountPrice(),
 					product.getDiscountPrice(), product.getId());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -116,7 +116,7 @@ public class ProductHandle {
 		sb.append("     	p.price,");
 		sb.append("     	p.content,");
 		sb.append("     	p.status,");
-		sb.append("     	p.create_date createDate,");
+		sb.append("     	p.create_time createTime,");
 		sb.append("     	p.discount_price discountPrice,");
 		sb.append("     	p.discounted");
 		sb.append(" FROM ");

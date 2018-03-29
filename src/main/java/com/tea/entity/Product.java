@@ -17,8 +17,8 @@ public class Product {
 	private Specification specification;// 单位
 	private BigDecimal price;// 价格
 	private String content;// 描述
-	private Status states = Status.FAYE_FLY;// 商品状态
-	private Date creatDate;
+	private Status status = Status.FAYE_FLY;// 商品状态
+	private Date createTime;
 	private BigDecimal discountPrice;// 折后价格
 	private boolean discounted;// 是否打折
 
@@ -86,20 +86,20 @@ public class Product {
 		this.content = content;
 	}
 
-	public Status getStates() {
-		return states;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setStates(Status states) {
-		this.states = states;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
-	public Date getCreatDate() {
-		return creatDate;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreatDate(Date creatDate) {
-		this.creatDate = creatDate;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public BigDecimal getDiscountPrice() {

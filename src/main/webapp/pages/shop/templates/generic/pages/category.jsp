@@ -1,3 +1,4 @@
+<%@page import="com.tea.enums.Category"%>
 <%
 response.setCharacterEncoding("UTF-8");
 response.setHeader("Cache-Control","no-cache");
@@ -25,7 +26,6 @@ response.setDateHeader ("Expires", -1);
 
 			<!-- include all header js and css -->
             <jsp:include page="/pages/shop/templates/generic/sections/shopLinks.jsp" />
-            
             <script src="<c:url value="/resources/js/jquery.easing.1.3.js" />"></script>
 			<script src="<c:url value="/resources/js/jquery.quicksand.js" />"></script>
 			<script src="<c:url value="/resources/js/jquery-sort-filter-plugin.js" />"></script>
@@ -33,32 +33,33 @@ response.setDateHeader ("Expires", -1);
  
                 
 		    <script type="text/html" id="productBoxTemplate">
-				{{#goods}}
+				{{#pageData}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
 									<a href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html">
-										<img src="{{image}}" alt="" />
+										<img src="/{{image}}" alt="" />
 									</a>
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{name}}</h3></a>
+									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{varieties.desc}}</h3></a>
 									<h4>
-										{{#discounted}}<del>{{priceStr}}</del>&nbsp;<span itemprop="price" class="specialPrice">{{discountPriceStr}}</span>{{/discounted}}
-										{{^discounted}}<span itemprop="price">{{priceStr}}</span>{{/discounted}}
+										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
+										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}
 									</h4>
 									<div class="store-btn">
       									<div class="store-btn-addtocart"><a class="addToCart" href="javascript:void(0)" productId="{{id}}">添加到购物车</a></div>
    									</div>
 								</div>
 						</div>
-				{{/goods}}
+				{{/pageData}}
     		</script>            
                 
  	</head> 
 
 	<body>
+		<input type="hidden" id="category" value="<%=request.getParameter("category")%>"/>
  	    <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -69,22 +70,37 @@ response.setDateHeader ("Expires", -1);
 		<div id="mainContent" class="container">
 			
 					  <header class="page-header row">
-					  <c:if test="${category.description.name!=null}">
 					  <div class="fixed-image section dark-translucent-bg parallax-bg-3">
 							<div class="container">
-							<h2 class="shop-banner-title lead"><c:out value="${category.description.name}"/></h2>
+							<h2 class="shop-banner-title lead"><%=Category.valueOf(request.getParameter("category")).getDescription()%></h2>
 							</div>
 					  </div>
-					  </c:if>
 					  <jsp:include page="breadcrumb.jsp" />
 					  </header>
 		
 					  
-					  <c:if test="${category.description.description!=null}">
 					  <div class="container">
-					  	<p><c:out value="${category.description.description}" escapeXml="false"/></p>
+					  	<p>
+					  		<c:choose>
+					  			
+							     <c:when test='<%=Category.GREEN_TEA.name().equals(request.getParameter("category"))%>'>
+							    	绿茶：茶是不经过发酵的茶，即将鲜叶经过摊晾后直接下到一二百度的热锅里炒制，以保持其绿色的特点。
+							    </c:when>
+							    <c:when test='<%=Category.BLACK_TEA.name().equals(request.getParameter("category"))%>'>
+							    	红茶 ：红茶与绿茶恰恰相反，是一种全发酵茶（发酵程度大于80％）。红茶的名字得自其汤色红。
+							    </c:when>
+							    <c:when test='<%=Category.DARK_GREEN_TEA.name().equals(request.getParameter("category"))%>'>
+							    	黑茶：黑茶原来主要销往边区，像云南的普洱茶就是其中一种。普洱茶是在已经制好的绿茶上浇上水，再经过发酵制成的。普洱茶具有降脂、减肥和降血压的功效，在东南亚和日本很普及。不过真要说减肥，效果最显著的还是乌龙茶。
+							    </c:when>
+							    <c:when test='<%=Category.OOLONG_TEA.name().equals(request.getParameter("category"))%>'>
+							    	乌龙茶 ：乌龙茶也就是青茶，是一类介于红绿茶之间的半发酵茶。乌龙茶在六大类茶中工艺最复杂费时，泡法也最讲究，所以喝乌龙茶也被人称为喝工夫茶。
+							    </c:when>
+							    <c:otherwise>
+							    	黄茶 ：著名的君山银针茶就属于黄茶，黄茶的制法有点像绿茶，不过中间需要闷黄三天。
+							    </c:otherwise> 
+							</c:choose>
+					  		</p>
 					  </div>
-					  </c:if>
 					  
 		
 					<div class="bedroom-all-product-area ptb-80">
@@ -296,13 +312,8 @@ response.setDateHeader ("Expires", -1);
 				}
 			 
 			 	function loadCategoryProducts() {
-			 		var url = '<%=request.getContextPath()%>/services/public/products/page/' + START_COUNT_PRODUCTS + '/' + MAX_PRODUCTS + '/<c:out value="${requestScope.MERCHANT_STORE.code}"/>/<c:out value="${requestScope.LANGUAGE.code}"/>/<c:out value="${category.description.friendlyUrl}"/>';
-				 	
-			 		if(filter!=null) {
-			 			url = url + '/filter=' + filter + '/filter-value=' + filterValue +'';
-			 		}
+			 		var url = '/product?category='+$("#category").val()+'&&method=categorys';
 			 		loadProducts(url,'#productsContainer');
-			
 			 	}
 			 	
 			 	
@@ -317,7 +328,7 @@ response.setDateHeader ("Expires", -1);
 			 	}
 			 	
 			 	function buildProductsList(productList, divProductsContainer) {
-			 		log('Products-> ' + productList.products.length);
+			 		log('Products-> ' + productList.pageData.length);
 					var productsTemplate = Hogan.compile(document.getElementById("productBoxTemplate").innerHTML);
 					var productsRendred = productsTemplate.render(productList);
 					$('#productsContainer').append(productsRendred);

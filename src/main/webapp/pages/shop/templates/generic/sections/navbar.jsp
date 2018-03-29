@@ -101,7 +101,7 @@ $(document).ready(function() {
 						<ul>
 							<c:set var="categorys" value="<%=com.tea.enums.Category.values()%>"/>
 							<c:forEach var="category" items="${categorys}">
-							    <li style="width:100px"><a href="/pages/shop/templates/generic/pages/category.jsp"><c:out
+							    <li style="width:100px"><a href="/pages/shop/templates/generic/pages/category.jsp?category=${category.getName()}"><c:out
 											value="${category.getDescription()}" /></a></li>
 							</c:forEach>
 							

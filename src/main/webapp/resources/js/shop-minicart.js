@@ -8,6 +8,10 @@
 	});
 	
 	function initMiniCart() {
+		//已登录
+		if($("#customerId").val()){
+			miniCart($("#customerId").val());
+		}
 		var cartCode = getCartCode();
 		//log('Check for cart code ' + cartCode);
 		if(cartCode!=null) {
@@ -22,25 +26,17 @@
 	}
 	
 	function removeCart() {
-		
 		var cartCode = getCartCode();
 		if(cartCode!=null) {
 			$.cookie('cart',null, { expires: 1, path:'/' });
 		}
-		
 	}
 	
 	function initBindings() {
-				
 		/** add to cart **/
 		$(".addToCart").click(function(){
 			addToCart($(this).attr("productId"));
 	    });
-		
-    	$("#open-cart").click(function(e) {
-    		//nothing required
-    	});
-		
 	}
 	
 	/**
@@ -232,28 +228,21 @@ function updateCart(cartDiv) {
 	}	
 }
 
-function miniCart(cartCode){
+function miniCart(customerId){
 
 	log('Display cart content');
 
-
 	$.ajax({  
 		 type: 'GET',  
-		 url: getContextPath() + '/shop/cart/displayMiniCartByCode?shoppingCartCode='+cartCode,  
+		 url:  '/shoppingCart?method=displayMiniCart&&customerId='+customerId,  
 		 cache:false,
 		 error: function(e) { 
 			 console.log('error ' + e);
-			 //nothing
-			 
 		 },
 		 success: function(miniCart) {
-			 log('Success ' + miniCart.code);
-
-			    cleanupMiniCart();
-			 	miniCartSummary(miniCart);
-			 	fullCart(miniCart);
-
-
+		    cleanupMiniCart();
+		 	miniCartSummary(miniCart);
+		 	fullCart(miniCart);
 		} 
 	});
 }
@@ -316,20 +305,17 @@ function cleanupMiniCart() {
 }
 
 function miniCartSummary(cart) {
-	
-	/*var miniCartSummaryTemplate = Hogan.compile(document.getElementById("miniCartSummaryTemplate").innerHTML);
+	var miniCartSummaryTemplate = Hogan.compile(document.getElementById("miniCartSummaryTemplate").innerHTML);
     var miniCartSummaryRendered = miniCartSummaryTemplate.render(cart);
-    $('#miniCartSummary').html(miniCartSummaryRendered);*/
+    $('#miniCartSummary').html(miniCartSummaryRendered);
 		
 }
 
 function fullCart(cart) {
-
-    /*var miniCartTemplate = Hogan.compile(document.getElementById("miniCartTemplate").innerHTML);
+    var miniCartTemplate = Hogan.compile(document.getElementById("miniCartTemplate").innerHTML);
     var miniCartRendered = miniCartTemplate.render(cart);
     //log(miniCartRendered);
-    $('#miniCartDetails').html(miniCartRendered);*/
-	
+    $('#miniCartDetails').html(miniCartRendered);
 }
 
 

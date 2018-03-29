@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import com.tea.Constants;
-import com.tea.entity.User;
+import com.tea.entity.Customer;
+import com.tea.entity.ShoppingCart;
 import com.tea.exception.ServiceException;
 import com.tea.utils.MD5;
 
 @SuppressWarnings("serial")
-@WebServlet("/user")
-public class UserServlet extends BaseServlet {
+@WebServlet("/customer")
+public class CustomerServlet extends BaseServlet {
 
 	public Object loadShippingAddress(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -31,7 +32,7 @@ public class UserServlet extends BaseServlet {
 	public void logon(HttpServletRequest request, HttpServletResponse response) {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		User user = userHandle.queryByEmail(email);
+		Customer user = customerHandle.queryByEmail(email);
 		if (user == null) {
 			throw new ServiceException("用户名错误。");
 		}
@@ -41,7 +42,7 @@ public class UserServlet extends BaseServlet {
 		/**
 		 * Login user
 		 */
-		User u = userHandle.queryByEmail(email);
+		Customer u = customerHandle.queryByEmail(email);
 		request.getSession().setAttribute(Constants.TEA_CUSTOMER, u);
 	}
 
@@ -57,17 +58,18 @@ public class UserServlet extends BaseServlet {
 		if (!password.equals(confirmPassword)) {
 			throw new ServiceException("两次输入的密码不一致");
 		}
-		User user = userHandle.queryByEmail(email);
-		if (user != null && StringUtils.isNotBlank(user.getEmail()) && user.getEmail().trim().equals(email)) {
+		Customer customer = customerHandle.queryByEmail(email);
+		if (customer != null && StringUtils.isNotBlank(customer.getEmail()) && customer.getEmail().trim().equals(email)) {
 			throw new ServiceException("邮箱已存在，请更换邮箱注册！");
 		}
-		user = new User(realName, phone, address, email, password,nickName);
-		userHandle.insert(user);
-
-		/**
-		 * Login user
-		 */
-		User u = userHandle.queryByEmail(email);
+		customer = new Customer(realName, phone, address, email, password, nickName);
+		customerHandle.insert(customer);
+		
+		Customer u = customerHandle.queryByEmail(email);
+		//创建购物车
+		ShoppingCart shoppingCart = new ShoppingCart(u);
+		shoppingCartHandle.insert(shoppingCart);
+		
 		request.getSession().setAttribute(Constants.TEA_CUSTOMER, u);
 	}
 

@@ -2,7 +2,13 @@ package com.tea.entity;
 
 import com.tea.utils.MD5;
 
-public class User {
+/**
+ * 客户表
+ * 
+ * @author Administrator
+ *
+ */
+public class Customer {
 	private int id;
 	private String realName;
 	private String phone;
@@ -11,11 +17,11 @@ public class User {
 	private String password;
 	private String nickName;
 
-	public User() {
+	public Customer() {
 		super();
 	}
 
-	public User(String realName, String phone, String address, String email, String password, String nickName) {
+	public Customer(String realName, String phone, String address, String email, String password, String nickName) {
 		super();
 		this.realName = realName;
 		this.nickName = nickName;

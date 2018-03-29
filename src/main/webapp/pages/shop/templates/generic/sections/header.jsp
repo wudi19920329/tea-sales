@@ -30,52 +30,52 @@
 
 <!-- Mini shopping cart JS template -->
 <script type="text/html" id="miniCartTemplate">
-                          {{#code}}
-                          {{#shoppingCartItems}}
+					 
+                          {{#pageData}}
                           <li>
 									<div class="cart-img">
-											{{#image}}
-												<img src="<c:out value="${pageContext.servletContext.contextPath}" />{{image}}">
-											{{/image}}
-											{{^image}}
+											{{#product.image}}
+												<img src="<c:out value="${pageContext.servletContext.contextPath}" />/{{product.image}}">
+											{{/product.image}}
+											{{^product.image}}
 												&nbsp
-											{{/image}}
+											{{/product.image}}
 									</div>	
 									<div class="cart-content">
-											<h4><a href="#">{{quantity}} x {{name}}</a></h4>
-											<span class="cart-price">{{price}}</span>
+											<h4><a href="#">{{quantity}} x {{product.category.description}}</a></h4>
+											<span class="cart-price">￥{{product.price}}</span>
 									</div>
 									<div class="cart-del">
 											<button productid="{{productId}}" class="close removeProductIcon" onclick="removeItemFromMinicart('{{id}}')"><i class="fa fa-times-circle"></i></a>
 									</div>			
 							</li>
-                            {{/shoppingCartItems}}
+                            
                             <li>&nbsp;</li>
-							<li class="total-price">共计&nbsp;{{total}}</li>
+							<li class="total-price">共计&nbsp;{{product.price}}</li>
 							<li class="checkout-bg">
 									<a href="#" onclick="viewShoppingCartPage();">结账<i class="fa fa-angle-right"></i></a>
 							</li>
-                            {{/code}}
-							{{^code}}
+                   			{{/pageData}}
+					 	{{^pageData}}
 							<h4 style="text-align: center;color:#666666;margin-top:10px;margin-bottom:10px;">您的购物车是空的</h4>
-						    {{/code}}
-
+					 	{{/pageData}}
 </script>
 
 <!-- mini cart label button template -->
 <script type="text/html" id="miniCartSummaryTemplate">
 		<!-- empty cart and full summary subTotal & quantity -->
-		{{^code}}
+		{{^pageData}}
 		<a href="#"><span class="lnr lnr-cart"></span>购物车 (0)</a>
-		{{/code}}
-		{{#code}}
-		<a href="#"><span class="lnr lnr-cart"></span>购物车 <font color="red"><strong>({{quantity}})</strong></font></a>
-		{{/code}}
+		{{/pageData}}
+		{{#pageData}}
+		<a href="#"><span class="lnr lnr-cart"></span>购物车 <font color="red"><strong>({{totalCount}})</strong></font></a>
+		{{/pageData}}
 </script>
 
 
 <!-- header-start -->
 <header>
+	<input type="hidden" id="customerId" value="${sessionScope.TEA_CUSTOMER.id}"/>
 	<div class="header-top-area ptb-10 hidden-xs">
 		<div class="container">
 			<div class="row">

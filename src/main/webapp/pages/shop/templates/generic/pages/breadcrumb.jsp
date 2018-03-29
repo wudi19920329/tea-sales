@@ -1,3 +1,4 @@
+<%@page import="com.tea.enums.Category"%>
 <%
 response.setCharacterEncoding("UTF-8");
 response.setHeader("Cache-Control","no-cache");
@@ -14,11 +15,13 @@ response.setDateHeader ("Expires", -1);
 			<div class="row">
 				<div class="col-md-12">
 					<ol class="breadcrumb">
-					  <c:forEach items="${requestScope.BREADCRUMB.breadCrumbs}" var="breadcrumb" varStatus="count">
-						  <li class="active"><c:if test="${count.index==0}"><i class="fa fa-home pr-10"></i></c:if>
-						    <a href="#">${breadcrumb.label}</a>
+						  <li class="active">
+							  <i class="fa fa-home pr-10"></i>
+							  <a href="#">主页</a>
 						  </li>
-					  </c:forEach>
+						  <li>
+						    <a href="#"><%=Category.valueOf(request.getParameter("category")).getDescription()%></a>
+						  </li>
 					</ol>
 				</div>
 			</div>

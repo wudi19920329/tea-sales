@@ -40,15 +40,12 @@ function hideSMLoading(element) {
 function loadProducts(url,divProductsContainer) {
 	showSMLoading(divProductsContainer);
 	$.ajax({
-			type: 'POST',
+			type: 'GET',
 			dataType: "json",
 			url: url,
 			success: function(productList) {
-
 				buildProductsList(productList,divProductsContainer);
 				callBackLoadProducts(productList);
-
-
 			},
 			error: function(jqXHR,textStatus,errorThrown) { 
 				hideSMLoading(divProductsContainer);
