@@ -10,72 +10,49 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2018-03-28 18:35:04
+Date: 2018-03-29 18:13:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `collect`
+-- Table structure for `t_customer`
 -- ----------------------------
-DROP TABLE IF EXISTS `collect`;
-CREATE TABLE `collect` (
-  `user_id` int(11) DEFAULT NULL,
-  `goods_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `t_customer`;
+CREATE TABLE `t_customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `real_name` varchar(20) COLLATE utf8_bin NOT NULL,
+  `nick_name` varchar(20) COLLATE utf8_bin NOT NULL,
+  `phone` varchar(20) COLLATE utf8_bin NOT NULL,
+  `address` varchar(255) COLLATE utf8_bin NOT NULL,
+  `email` varchar(30) COLLATE utf8_bin NOT NULL,
+  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records of collect
+-- Records of t_customer
 -- ----------------------------
+INSERT INTO `t_customer` VALUES ('23', '吴棣', '地瓜', '13213140079', '北京市/北京市/东城区', '381828438@qq.com', '9db06bcff9248837f86d1a6bcf41c9e7');
 
 -- ----------------------------
--- Table structure for `message`
+-- Table structure for `t_order`
 -- ----------------------------
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message` (
-  `mess_from_id` int(11) NOT NULL,
-  `mess_to_id` int(11) NOT NULL,
-  `mess_text` varchar(255) COLLATE utf8_bin NOT NULL,
-  `send_time` datetime NOT NULL,
-  `mess_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `mess_type` int(11) DEFAULT NULL,
-  PRIMARY KEY (`mess_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- ----------------------------
--- Records of message
--- ----------------------------
-INSERT INTO `message` VALUES ('1', '1', '你的商品 <a target=\'_blank\' href=\'goods/info.jsp?goodsid=20\'>铁观音</a>已经审核通过', '2018-03-21 17:48:49', '31', null);
-
--- ----------------------------
--- Table structure for `order`
--- ----------------------------
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE `order` (
+DROP TABLE IF EXISTS `t_order`;
+CREATE TABLE `t_order` (
   `id` int(11) NOT NULL,
-  `goods_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `date` datetime NOT NULL,
-  `message` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `customer_id` int(11) NOT NULL,
+  `payableAmount` decimal(20,2) NOT NULL,
+  `shopping_cart_id` int(11) NOT NULL,
+  `order_status` varchar(20) COLLATE utf8_bin NOT NULL,
+  `express_delivery_mode` varchar(20) COLLATE utf8_bin NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records of order
--- ----------------------------
-
--- ----------------------------
--- Table structure for `shoppingcart`
--- ----------------------------
-DROP TABLE IF EXISTS `shoppingcart`;
-CREATE TABLE `shoppingcart` (
-  `id` int(11) NOT NULL,
-  `goodsId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- ----------------------------
--- Records of shoppingcart
+-- Records of t_order
 -- ----------------------------
 
 -- ----------------------------
@@ -92,7 +69,7 @@ CREATE TABLE `t_product` (
   `price` decimal(20,2) NOT NULL COMMENT '原始价格',
   `content` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
   `status` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '商品状态',
-  `create_date` datetime NOT NULL,
+  `create_time` datetime NOT NULL,
   `discount_price` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '折后价格',
   `discounted` bit(1) NOT NULL COMMENT '是否打折',
   PRIMARY KEY (`id`)
@@ -108,32 +85,43 @@ INSERT INTO `t_product` VALUES ('23', 'static/goods_img/1.jpg', 'OOLONG_TEA', 'A
 INSERT INTO `t_product` VALUES ('24', 'static/goods_img/1.jpg', 'YELLOW_TEA', 'HIPPOCAMPAL_PALACE_TEA', '10000', 'SMALL', '500.15', '', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 
 -- ----------------------------
--- Table structure for `user`
+-- Table structure for `t_shopping_cart`
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `real_name` varchar(20) COLLATE utf8_bin NOT NULL,
-  `nick_name` varchar(20) COLLATE utf8_bin NOT NULL,
-  `phone` varchar(20) COLLATE utf8_bin NOT NULL,
-  `address` varchar(255) COLLATE utf8_bin NOT NULL,
-  `email` varchar(30) COLLATE utf8_bin NOT NULL,
-  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+DROP TABLE IF EXISTS `t_shopping_cart`;
+CREATE TABLE `t_shopping_cart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `customer_id` int(11) NOT NULL COMMENT '客户id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records of user
+-- Records of t_shopping_cart
 -- ----------------------------
-INSERT INTO `user` VALUES ('22', '吴棣', '大地', '13213140079', '安徽省/芜湖市/镜湖区', '381828438@qq.com', '9db06bcff9248837f86d1a6bcf41c9e7');
-DROP TRIGGER IF EXISTS `change_user_mess_num`;
-DELIMITER ;;
-CREATE TRIGGER `change_user_mess_num` AFTER INSERT ON `message` FOR EACH ROW update user set mess_num=mess_num+1 where id=new.mess_to_id
-;;
-DELIMITER ;
+INSERT INTO `t_shopping_cart` VALUES ('1', '23', '2018-03-29 15:48:40', '2018-03-29 15:48:40');
+
+-- ----------------------------
+-- Table structure for `t_shopping_cart_item`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_shopping_cart_item`;
+CREATE TABLE `t_shopping_cart_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `product_id` int(11) NOT NULL COMMENT '商品id',
+  `shopping_cart_id` int(11) NOT NULL COMMENT '购物车id',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_shopping_cart_item
+-- ----------------------------
+INSERT INTO `t_shopping_cart_item` VALUES ('1', '1', '1', '10', '2018-03-29 00:00:00', '2018-03-29 00:00:00');
 DROP TRIGGER IF EXISTS `update_goods_status`;
 DELIMITER ;;
-CREATE TRIGGER `update_goods_status` AFTER INSERT ON `order` FOR EACH ROW begin
+CREATE TRIGGER `update_goods_status` AFTER INSERT ON `t_order` FOR EACH ROW begin
 set @buyerid=new.user_id;
 set @buyername=(select name from user where id=@buyerid);
 set @sellerid = (select producter_id from goods where id=new.goods_id);
