@@ -3,10 +3,12 @@ package com.tea.dbHandle;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.tea.entity.Product;
@@ -35,15 +37,42 @@ public class ShoppingCartItemHandle {
 
 	}
 
-	public void update(ShoppingCartItem shoppingCartItem) {
-		String sql = "update t_shopping_cart_item set product_id=?,shopping_cart_id=?,quantity=?,create_time=?,update_time=? where id=?";
+	public void updateQuantity(ShoppingCartItem shoppingCartItem) {
+		String sql = "update t_shopping_cart_item set quantity=?,update_time=? where id=?";
 		try {
-			qr.update(sql, shoppingCartItem.getProduct().getId(), shoppingCartItem.getShoppingCart().getId(),
-					shoppingCartItem.getQuantity(), shoppingCartItem.getCreateTime(), shoppingCartItem.getUpdateTime());
+			qr.update(sql,  shoppingCartItem.getQuantity(), new Date(),shoppingCartItem.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public ShoppingCartItem queryBy(Integer productId,Integer shoppingCartId) {
+		String sql = "select * from t_shopping_cart_item sci WHERE sci.product_id = ? AND sci.shopping_cart_id = ?";
+		try {
+			return qr.query(sql, new BeanHandler<ShoppingCartItem>(ShoppingCartItem.class), productId,shoppingCartId);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public ShoppingCartItem queryById(Integer id) {
+		String sql = "select * from t_shopping_cart_item sci WHERE sci.id = ?";
+		try {
+			return qr.query(sql, new BeanHandler<ShoppingCartItem>(ShoppingCartItem.class), id);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void delete(Integer id) {
+		String sql = "DELETE FROM t_shopping_cart_item WHERE id=?";
+		try {
+			qr.update(sql, id);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 
 	public PageBean<ShoppingCartItem> queryPageByCustomerId(PageBean<ShoppingCartItem> pb, Integer customerId) {
 		int totalCount = this.getTotalCountBy(customerId);
@@ -60,7 +89,7 @@ public class ShoppingCartItemHandle {
 		int count = pb.getPageCount(); // 查询返回的行数
 
 		// 分页查询数据; 把查询到的数据设置到pb对象中
-		String sql = "SELECT                                                    \n"
+		String sql = "SELECT                                                \n"
 				+ "	p.id productId,                                         \n"
 				+ "	p.category,                                             \n"
 				+ "	p.image,                                                \n"
@@ -71,11 +100,11 @@ public class ShoppingCartItemHandle {
 				+ "	sc.id shoppingCartId,                                   \n"
 				+ "	sci.quantity quantity,                                  \n"
 				+ "	sci.id shoppingCartItemId                               \n"
-				+ "FROM                                                       \n"
+				+ "FROM                                                     \n"
 				+ "	t_shopping_cart_item sci                                \n"
 				+ "	JOIN t_product p on p.id = sci.product_id               \n"
 				+ "	JOIN t_shopping_cart sc on sc.id =sci.shopping_cart_id  \n"
-				+ "WHERE														\n" + "	sc.customer_id = ? limit ?,? ";
+				+ "WHERE													\n" + "	sc.customer_id = ? limit ?,? ";
 		params.add(customerId);
 		params.add(index);
 		params.add(count);
@@ -102,7 +131,7 @@ public class ShoppingCartItemHandle {
 							shoppingCartItem.setProduct(product);
 							shoppingCartItem.setShoppingCart(shoppingCart);
 							shoppingCartItem.setQuantity(rs.getInt("quantity"));
-							shoppingCartItem.setId(rs.getInt("shoppingCartId"));
+							shoppingCartItem.setId(rs.getInt("shoppingCartItemId"));
 							SHOPPINGCARTITEMS.add(shoppingCartItem);
 						}
 						return SHOPPINGCARTITEMS;

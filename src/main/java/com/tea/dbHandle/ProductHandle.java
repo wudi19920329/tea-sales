@@ -61,7 +61,7 @@ public class ProductHandle {
 		}
 	}
 
-	public Product findById(int id) {
+	public Product queryById(int id) {
 		String sql = "SELECT * FROM t_product where id =?";
 		try {
 			return qr.query(sql, new BeanHandler<Product>(Product.class), id);

@@ -42,7 +42,7 @@
 											{{/product.image}}
 									</div>	
 									<div class="cart-content">
-											<h4><a href="#">{{quantity}} x {{product.category.description}}</a></h4>
+											<h4><a href="#">{{quantity}} x {{product.varieties.desc}}</a></h4>
 											<span class="cart-price">￥{{product.price}}</span>
 									</div>
 									<div class="cart-del">
@@ -50,12 +50,15 @@
 									</div>			
 							</li>
                             
-                            <li>&nbsp;</li>
-							<li class="total-price">共计&nbsp;{{product.price}}</li>
-							<li class="checkout-bg">
-									<a href="#" onclick="viewShoppingCartPage();">结账<i class="fa fa-angle-right"></i></a>
-							</li>
+                           
                    			{{/pageData}}
+							{{#subTotalCount}}
+							<li>&nbsp;</li>
+							<li class="total-price">共计&nbsp;￥{{subTotalPrice}}</li>
+							<li class="checkout-bg">
+									<a href="/shoppingCart?method=displayShoppingCart" >结账<i class="fa fa-angle-right"></i></a>
+							</li>
+							{{/subTotalCount}}
 					 	{{^pageData}}
 							<h4 style="text-align: center;color:#666666;margin-top:10px;margin-bottom:10px;">您的购物车是空的</h4>
 					 	{{/pageData}}
@@ -64,18 +67,17 @@
 <!-- mini cart label button template -->
 <script type="text/html" id="miniCartSummaryTemplate">
 		<!-- empty cart and full summary subTotal & quantity -->
-		{{^pageData}}
+		{{^subTotalCount}}
 		<a href="#"><span class="lnr lnr-cart"></span>购物车 (0)</a>
-		{{/pageData}}
-		{{#pageData}}
-		<a href="#"><span class="lnr lnr-cart"></span>购物车 <font color="red"><strong>({{totalCount}})</strong></font></a>
-		{{/pageData}}
+		{{/subTotalCount}}
+		{{#subTotalCount}}
+		<a href="#"><span class="lnr lnr-cart"></span>购物车 <font color="red"><strong>({{subTotalCount}})</strong></font></a>
+		{{/subTotalCount}}
 </script>
 
 
 <!-- header-start -->
 <header>
-	<input type="hidden" id="customerId" value="${sessionScope.TEA_CUSTOMER.id}"/>
 	<div class="header-top-area ptb-10 hidden-xs">
 		<div class="container">
 			<div class="row">

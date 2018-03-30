@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -59,18 +60,31 @@ public class CustomerServlet extends BaseServlet {
 			throw new ServiceException("两次输入的密码不一致");
 		}
 		Customer customer = customerHandle.queryByEmail(email);
-		if (customer != null && StringUtils.isNotBlank(customer.getEmail()) && customer.getEmail().trim().equals(email)) {
+		if (customer != null && StringUtils.isNotBlank(customer.getEmail())
+				&& customer.getEmail().trim().equals(email)) {
 			throw new ServiceException("邮箱已存在，请更换邮箱注册！");
 		}
 		customer = new Customer(realName, phone, address, email, password, nickName);
 		customerHandle.insert(customer);
-		
+
 		Customer u = customerHandle.queryByEmail(email);
-		//创建购物车
+		// 创建购物车
 		ShoppingCart shoppingCart = new ShoppingCart(u);
 		shoppingCartHandle.insert(shoppingCart);
-		
+
 		request.getSession().setAttribute(Constants.TEA_CUSTOMER, u);
+	}
+
+	/**
+	 * Return LoginSession if found in HttpSession scope, else return NULL
+	 * value.
+	 */
+	public static Customer getOptionalLoginSession(HttpServletRequest req) {
+		Customer result = null;
+		HttpSession session = req.getSession(false);
+		if (session != null)
+			result = (Customer) session.getAttribute(Constants.TEA_CUSTOMER);
+		return result;
 	}
 
 }

@@ -77,4 +77,11 @@ public class ShoppingCartItem {
 		this.updateTime = updateTime;
 	}
 
+	public void addQuantity(Integer quantity) {
+		this.quantity += quantity;
+	}
+	
+	public void subtractQuantity(Integer quantity) {
+		this.quantity -= quantity;
+	}
 }

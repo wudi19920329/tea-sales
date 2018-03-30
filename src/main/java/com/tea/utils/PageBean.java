@@ -1,5 +1,6 @@
 package com.tea.utils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -12,6 +13,8 @@ public class PageBean<T> {
 	private int totalCount; // 总记录数
 	private int totalPage; // 总页数 = 总记录数 / 每页显示的行数 (+ 1)
 	private List<T> pageData; // 分页查询到的数据
+	private BigDecimal subTotalPrice;// 小计
+	private Integer subTotalCount;// 数量小计
 
 	// 返回总页数
 	public int getTotalPage() {
@@ -58,4 +61,21 @@ public class PageBean<T> {
 	public void setPageData(List<T> pageData) {
 		this.pageData = pageData;
 	}
+
+	public BigDecimal getSubTotalPrice() {
+		return subTotalPrice;
+	}
+
+	public void setSubTotalPrice(BigDecimal subTotalPrice) {
+		this.subTotalPrice = subTotalPrice;
+	}
+
+	public Integer getSubTotalCount() {
+		return subTotalCount;
+	}
+
+	public void setSubTotalCount(Integer subTotalCount) {
+		this.subTotalCount = subTotalCount;
+	}
+
 }

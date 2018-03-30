@@ -49,7 +49,7 @@ public abstract class BaseServlet extends HttpServlet {
 			returnValue = method.invoke(this, request, response);
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
-			// ajax请求
+			// agetShoppingCartItem(customer.getId())jax请求
 			if (isAjax) {
 				response.setContentType(Constants.AJAX_CONTENT_TYPE);
 				response.getOutputStream()

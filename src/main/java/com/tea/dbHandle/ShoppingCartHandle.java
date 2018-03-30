@@ -42,7 +42,7 @@ public class ShoppingCartHandle {
 		}
 	}
 
-	public ShoppingCart queryByCustomerId(String customerId) {
+	public ShoppingCart queryByCustomerId(Integer customerId) {
 		String sql = "SELECT id,customer_id as customerId,create_time as createTime,update_time as updateTime FROM t_shopping_cart WHERE customer_id=?";
 		try {
 			return qr.query(sql, new BeanHandler<ShoppingCart>(ShoppingCart.class), customerId);

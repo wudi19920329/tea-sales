@@ -18,7 +18,7 @@
 		<link href="<c:url value="/resources/templates/generic/css/magnific-popup.css" />" rel="stylesheet" type="text/css">
 		<link href="<c:url value="/resources/templates/generic/css/magnific-popup.css" />" rel="stylesheet" type="text/css">
 		<link href="<c:url value="/resources/templates/generic/css/owl.carousel.css" />" rel="stylesheet" type="text/css">
-		<%-- <link href="<c:url value="/resources/templates/generic/css/linearicons-icon-font.min.css" />" rel="stylesheet" type="text/css"> --%>
+		<link href="<c:url value="/resources/templates/generic/css/linearicons-icon-font.min.css" />" rel="stylesheet" type="text/css">
 		<link href="<c:url value="/resources/templates/generic/css/font-awesome.min.css" />" rel="stylesheet" type="text/css">
 
 		

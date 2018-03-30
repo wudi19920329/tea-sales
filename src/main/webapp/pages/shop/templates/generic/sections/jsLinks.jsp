@@ -36,7 +36,6 @@
     <script src="<c:url value="/resources/js/jquery-cookie.js" />"></script>
     <script src="<c:url value="/resources/js/shop-minicart.js" />"></script>
     <script src="<c:url value="/resources/js/shop-account.js" />"></script>
-    <script src="<c:url value="/resources/js/login.js" />"></script>
     <script src="<c:url value="/resources/js/jquery.showLoading.min.js" />"></script>
 
 
