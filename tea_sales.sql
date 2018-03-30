@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2018-03-29 18:13:09
+Date: 2018-03-30 18:03:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,12 +28,13 @@ CREATE TABLE `t_customer` (
   `email` varchar(30) COLLATE utf8_bin NOT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of t_customer
 -- ----------------------------
 INSERT INTO `t_customer` VALUES ('23', '吴棣', '地瓜', '13213140079', '北京市/北京市/东城区', '381828438@qq.com', '9db06bcff9248837f86d1a6bcf41c9e7');
+INSERT INTO `t_customer` VALUES ('24', '牛占元', '牛牛', '13213140077', '安徽省/合肥市/瑶海区', 'john@test.com', '9db06bcff9248837f86d1a6bcf41c9e7');
 
 -- ----------------------------
 -- Table structure for `t_order`
@@ -94,12 +95,13 @@ CREATE TABLE `t_shopping_cart` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of t_shopping_cart
 -- ----------------------------
 INSERT INTO `t_shopping_cart` VALUES ('1', '23', '2018-03-29 15:48:40', '2018-03-29 15:48:40');
+INSERT INTO `t_shopping_cart` VALUES ('2', '24', '2018-03-30 16:26:36', '2018-03-30 16:26:36');
 
 -- ----------------------------
 -- Table structure for `t_shopping_cart_item`
@@ -113,12 +115,13 @@ CREATE TABLE `t_shopping_cart_item` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_shopping_cart_item
 -- ----------------------------
-INSERT INTO `t_shopping_cart_item` VALUES ('1', '1', '1', '10', '2018-03-29 00:00:00', '2018-03-29 00:00:00');
+INSERT INTO `t_shopping_cart_item` VALUES ('11', '1', '1', '2', '2018-03-30 17:42:52', '2018-03-30 17:43:43');
+INSERT INTO `t_shopping_cart_item` VALUES ('12', '21', '1', '2', '2018-03-30 17:42:57', '2018-03-30 17:43:43');
 DROP TRIGGER IF EXISTS `update_goods_status`;
 DELIMITER ;;
 CREATE TRIGGER `update_goods_status` AFTER INSERT ON `t_order` FOR EACH ROW begin
