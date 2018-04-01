@@ -19,6 +19,7 @@ import com.tea.dbHandle.ProductHandle;
 import com.tea.dbHandle.ShoppingCartHandle;
 import com.tea.dbHandle.ShoppingCartItemHandle;
 import com.tea.dbHandle.CustomerHandle;
+import com.tea.dbHandle.OrderHandle;
 import com.tea.exception.ExceptionInfo;
 import com.tea.factory.BeanFactory;
 import com.tea.utils.WebUtils;
@@ -30,6 +31,8 @@ public abstract class BaseServlet extends HttpServlet {
 	protected CustomerHandle customerHandle = BeanFactory.getInstance("customerHandle");
 	protected ShoppingCartHandle shoppingCartHandle = BeanFactory.getInstance("shoppingCartHandle");
 	protected ShoppingCartItemHandle shoppingCartItemHandle = BeanFactory.getInstance("shoppingCartItemHandle");
+	protected OrderHandle orderHandle = BeanFactory.getInstance("orderHandle");
+	
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

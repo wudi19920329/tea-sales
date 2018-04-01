@@ -27,9 +27,9 @@ public class ShoppingCartItemHandle {
 	private QueryRunner qr = JdbcUtils.getQueryRunner();
 
 	public void insert(ShoppingCartItem shoppingCartItem) {
-		String sql = "INSERT INTO t_shopping_cart_item(product_id,shopping_cart_id,quantity,create_time,update_time) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO t_shopping_cart_item(product_id,shopping_cart_id,status,quantity,create_time,update_time) VALUES (?,?,?,?,?,?)";
 		try {
-			qr.update(sql, shoppingCartItem.getProduct().getId(), shoppingCartItem.getShoppingCart().getId(),
+			qr.update(sql, shoppingCartItem.getProduct().getId(), shoppingCartItem.getShoppingCart().getId(),shoppingCartItem.getStatus().name(),
 					shoppingCartItem.getQuantity(), shoppingCartItem.getCreateTime(), shoppingCartItem.getUpdateTime());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -41,6 +41,15 @@ public class ShoppingCartItemHandle {
 		String sql = "update t_shopping_cart_item set quantity=?,update_time=? where id=?";
 		try {
 			qr.update(sql,  shoppingCartItem.getQuantity(), new Date(),shoppingCartItem.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateStatus(ShoppingCartItem shoppingCartItem) {
+		String sql = "update t_shopping_cart_item set status=?,update_time=? where id=?";
+		try {
+			qr.update(sql,  shoppingCartItem.getStatus().name(), new Date(),shoppingCartItem.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +113,8 @@ public class ShoppingCartItemHandle {
 				+ "	t_shopping_cart_item sci                                \n"
 				+ "	JOIN t_product p on p.id = sci.product_id               \n"
 				+ "	JOIN t_shopping_cart sc on sc.id =sci.shopping_cart_id  \n"
-				+ "WHERE													\n" + "	sc.customer_id = ? limit ?,? ";
+				+ "WHERE sci.status ='FOR_THE_PAYMENT'	 AND				\n" 
+				+ "	sc.customer_id = ? limit ?,? ";
 		params.add(customerId);
 		params.add(index);
 		params.add(count);
@@ -155,7 +165,8 @@ public class ShoppingCartItemHandle {
 				+ "FROM                                                       \n"
 				+ "	t_shopping_cart_item sci                                \n"
 				+ "	JOIN t_shopping_cart sc on sc.id =sci.shopping_cart_id  \n"
-				+ "WHERE														\n" + "	sc.customer_id = ?";
+				+ "WHERE	sci.status ='FOR_THE_PAYMENT' AND				"
+				+ "\n" + "	sc.customer_id = ?";
 		try {
 			// 执行查询， 返回结果的第一行的第一列
 			Long count = qr.query(sql, new ScalarHandler<Long>(), customerId);

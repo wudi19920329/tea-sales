@@ -94,6 +94,9 @@ response.setDateHeader ("Expires", -1);
 									<br/>
 									<br/>
 									收货地址：${sessionScope.TEA_CUSTOMER.address}
+									<br/>
+									<br/>
+									邮编：${sessionScope.TEA_CUSTOMER.postcode}
 								</address>
 						   </form>
 						</div>

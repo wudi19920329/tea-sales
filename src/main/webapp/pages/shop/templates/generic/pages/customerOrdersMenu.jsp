@@ -12,8 +12,6 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-<c:set var="orders"
-	value="${pageContext.request.contextPath}/shop/customer/orders.html" />
 <ul class="nav nav-list">
-	<li><a href="${orders}"><i class="fa fa-angle-right"></i> 过去的订单</a></li>
+	<li><a href="/order?method=displayPastOrders"><i class="fa fa-angle-right"></i> 过去的订单</a></li>
 </ul>

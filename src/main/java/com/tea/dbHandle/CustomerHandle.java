@@ -15,9 +15,9 @@ public class CustomerHandle {
 	private QueryRunner qr = JdbcUtils.getQueryRunner();
 
 	public void insert(Customer customer) {
-		String sql = "INSERT INTO t_customer(real_name,nick_name,phone,address,email,password) VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO t_customer(real_name,nick_name,phone,address,postcode,email,password) VALUES (?,?,?,?,?,?,?)";
 		try {
-			qr.update(sql, customer.getRealName(), customer.getNickName(), customer.getPhone(), customer.getAddress(),
+			qr.update(sql, customer.getRealName(), customer.getNickName(), customer.getPhone(), customer.getAddress(),customer.getPostcode(),
 					customer.getEmail(), customer.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -36,7 +36,7 @@ public class CustomerHandle {
 	}
 
 	public List<Customer> query() {
-		String sql = "SELECT id,real_name,nick_name,phone,address,email,password FROM t_customer WHERE real_name LIKE ? OR email LIKE ?";
+		String sql = "SELECT id,real_name,nick_name,phone,address,postcode,email,password FROM t_customer WHERE real_name LIKE ? OR email LIKE ?";
 		try {
 			return qr.query(sql, new BeanListHandler<Customer>(Customer.class));
 		} catch (Exception e) {
@@ -45,7 +45,7 @@ public class CustomerHandle {
 	}
 
 	public Customer queryById(int id) {
-		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,email,password FROM t_customer WHERE id=?";
+		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,postcode,email,password FROM t_customer WHERE id=?";
 		try {
 			return qr.query(sql, new BeanHandler<Customer>(Customer.class), id);
 		} catch (Exception e) {
@@ -54,7 +54,7 @@ public class CustomerHandle {
 	}
 
 	public Customer queryByEmail(String email) {
-		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,email,password FROM t_customer WHERE email=?";
+		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,postcode,email,password FROM t_customer WHERE email=?";
 		try {
 			return qr.query(sql, new BeanHandler<Customer>(Customer.class), email);
 		} catch (Exception e) {
@@ -63,7 +63,7 @@ public class CustomerHandle {
 	}
 
 	public Customer queryByRealName(String realName) {
-		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,email,password FROM t_customer WHERE real_name=?";
+		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,postcode,email,password FROM t_customer WHERE real_name=?";
 		try {
 			return qr.query(sql, new BeanHandler<Customer>(Customer.class), realName);
 		} catch (Exception e) {

@@ -9,10 +9,11 @@ import com.tea.utils.MD5;
  *
  */
 public class Customer {
-	private int id;
+	private Integer id;
 	private String realName;
 	private String phone;
 	private String address;
+	private Integer postcode;
 	private String email;
 	private String password;
 	private String nickName;
@@ -21,13 +22,15 @@ public class Customer {
 		super();
 	}
 
-	public Customer(String realName, String phone, String address, String email, String password, String nickName) {
+	public Customer(String realName, String phone, String address, Integer postcode, String email, String password,
+			String nickName) {
 		super();
 		this.realName = realName;
 		this.nickName = nickName;
 		this.phone = phone;
 		this.address = address;
 		this.email = email;
+		this.postcode = postcode;
 		this.password = MD5.getMD5(MD5.getMD5(password));
 	}
 
@@ -39,12 +42,20 @@ public class Customer {
 		this.nickName = nickName;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(Integer postcode) {
+		this.postcode = postcode;
 	}
 
 	public String getRealName() {

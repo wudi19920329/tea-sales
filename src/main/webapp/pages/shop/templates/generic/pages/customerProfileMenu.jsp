@@ -22,6 +22,6 @@
 	</a></li>
 	<li><a href="<c:url value="/shop/customer/password.html"/>"><i
 			class="fa fa-angle-right"></i> 更改密码</a></li>
-	<li><a href="<c:url value="/shop/customer/logout"/>"><i
+	<li><a href="/customer?method=logout"><i
 			class="fa fa-angle-right"></i> 登出</a></li>
 </ul>

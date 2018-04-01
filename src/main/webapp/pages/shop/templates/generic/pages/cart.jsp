@@ -179,7 +179,7 @@ response.setDateHeader ("Expires", -1);
 															</div>
 														</div>
 														<div class="wc-proceed-to-checkout">
-															<a href="<c:url value="/shop/order/checkout.html"/>">进入结算</a>
+															<a href="checkout.jsp">进入结算</a>
 														</div>
 													</div>
 												</div>

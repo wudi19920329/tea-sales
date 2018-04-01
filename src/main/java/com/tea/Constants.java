@@ -12,5 +12,7 @@ public interface Constants {
 	String TEA_CUSTOMER = "TEA_CUSTOMER";
 	String COOKIE_NAME_USER = "tea_user";
 	String MERCHANT_STORE = "DEFAULT";
+	
+	String ORDER_NUMBER_PREFIX="TEA_ORDER_{0}_{1}";
 
 }

@@ -92,7 +92,7 @@
 									<li class="click_menu"><a href="#">欢迎光临&nbsp;<span>${sessionScope.TEA_CUSTOMER.nickName}</span><i class="fa fa-angle-down"></i></a>
 										<ul class="click_menu_show">
 											<li><a href="/pages/shop/templates/generic/pages/dashboard.jsp" >我的账户</a></li>
-											<li><a href="#" onClick="javascript:location.href='<c:url value="/shop/customer/logout" />';" href="#">退出</a></li>
+											<li><a href="javascript:void(0);" onClick="javascript:location.href='/customer?method=logout'">退出</a></li>
 										</ul>
 									</li>
 								</ul>

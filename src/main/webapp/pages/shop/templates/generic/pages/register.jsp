@@ -107,6 +107,11 @@ response.setDateHeader ("Expires", -1);
 										<button class="btn btn-danger" id="destroy" type="button">确定</button>
 									</div>
 									<!-- 城市信息end -->
+									
+									<div class="form-group login-page">
+										<label for="postcode">邮编 <span>*</span></label> <input name="postcode"
+											id="postcode" class="span8 required form-control form-control-md" />
+									</div>
 			
 									<div class="login-title">
 										<h3>登陆信息</h3>
@@ -163,25 +168,24 @@ response.setDateHeader ("Expires", -1);
 			        var length = value.length;
 			        return this.optional(element) || (length == 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value));
 			    }, "请正确填写您的手机号码。");
-			 	// 地址
-			    jQuery.validator.addMethod("address", function(value, element) {
-			    	if($("#address").attr("readonly") && $("#address").val()){
-			    		return true;
-			    	}
-			        return false;
-			    }, "请确认地址。");
 				//邮箱
 				jQuery.validator.addMethod("isEmail",function(value,element,params){  
 			        var isEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;  
 			        return this.optional(element)||(isEmail.test(value));  
 			    },"*请输入正确的邮箱。");  
 				
-				// 匹配密码，以字母开头，长度在6-12之间，必须包含数字和特殊字符。
+				// 匹配密码
 			    jQuery.validator.addMethod("isPwd", function(value, element) {
 			        var str = value;
 			        return this.optional(element) || /^\d{6}$/.test(str);
 			    }, "密码为6位数字。");	
+			 	// 匹配邮编
+			    jQuery.validator.addMethod("isPostcode", function(value, element) {
+			        var str = value;
+			        return this.optional(element) || /^\d{6}$/.test(str);
+			    }, "邮编为6位数字。");	
 				
+			    
 				
 			   var validate = $("#registrationForm").validate({
 			        errorElement : 'span',
@@ -197,13 +201,13 @@ response.setDateHeader ("Expires", -1);
 			        		required:true,
 			        		isPhone:true
 			        	},
-			        	address :{
-			        		required:true,
-			        		address:true
-			        	},
 			        	email : {
 			                required : true,
 			                isEmail:"*请输入正确的邮箱。", 
+			            },
+			            postcode : {
+			                required : true,
+			                isPostcode:"*请输入正确的邮编。", 
 			            },
 			            password : {
 			                required : true,
@@ -225,12 +229,13 @@ response.setDateHeader ("Expires", -1);
 			        	phone : {
 			        		required:"请输入手机号。"
 			        	},
-			        	address : {
-			        		required:"请选择地址。"
-			        	},
 			            email : {
 			                required : "请输入Email地址。",
 			                email:"*请输入正确的邮箱。"
+			            },
+			            postcode : {
+			                required : "请输入邮编。",
+			                postcode:"*请输入正确的邮编。"
 			            },
 			            password : {
 			                required : "请输入密码。",
@@ -266,6 +271,7 @@ response.setDateHeader ("Expires", -1);
 					   		realName:$("#realName").val(),
 					   		address:$("#address").val(),
 					   		phone:$("#phone").val(),
+					   		postcode:$("#postcode").val(),
 					   		email:$("#email").val(),
 					   		password:$("#password").val(),
 					   		confirmPassword:$("#confirmPassword").val(),
