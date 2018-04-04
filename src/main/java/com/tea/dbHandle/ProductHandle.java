@@ -2,15 +2,18 @@ package com.tea.dbHandle;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.lang3.StringUtils;
 
 import com.tea.entity.Product;
 import com.tea.enums.Category;
+import com.tea.enums.Status;
 import com.tea.exception.ServiceException;
 import com.tea.utils.JdbcUtils;
 import com.tea.utils.PageBean;
@@ -20,12 +23,12 @@ public class ProductHandle {
 	private QueryRunner qr = JdbcUtils.getQueryRunner();
 
 	public void insert(Product product) {
-		String sql = " INSERT t_product(image,category,varieties,inventory,specification,price,content,status,create_time,discount_price,discounted) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = " INSERT t_product(name,image,category,inventory,specification,price,content,status,create_time,discount_price,discounted) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 		try {
-			qr.update(sql, product.getImage(), product.getCategory().name(), product.getVarieties().name(),
+			qr.update(sql, product.getName(),product.getImage(), product.getCategory().name(), 
 					product.getInventory(), product.getSpecification().name(), product.getPrice(), product.getContent(),
 					product.getStatus().name(), product.getCreateTime(), product.getDiscountPrice(),
-					product.getDiscountPrice());
+					product.isDiscounted());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -41,12 +44,12 @@ public class ProductHandle {
 	}
 
 	public void update(Product product) {
-		String sql = "UPDATE t_product SET image=?,category=?,varieties=?,inventory=?,specification=?,price=?,content=?,status=?,create_time=?,discount_price=?,discounted=? WHERE id =?";
+		String sql = "UPDATE t_product SET image=?,category=?,name=?,inventory=?,specification=?,price=?,content=?,status=?,create_time=?,discount_price=?,discounted=? WHERE id =?";
 		try {
-			qr.update(sql, product.getImage(), product.getCategory().name(), product.getVarieties().name(),
+			qr.update(sql, product.getImage(), product.getCategory().name(), product.getName(),
 					product.getInventory(), product.getSpecification().name(), product.getPrice(), product.getContent(),
 					product.getStatus().name(), product.getCreateTime(), product.getDiscountPrice(),
-					product.getDiscountPrice(), product.getId());
+					product.isDiscounted(), product.getId());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -62,7 +65,7 @@ public class ProductHandle {
 	}
 
 	public Product queryById(int id) {
-		String sql = "SELECT * FROM t_product where id =?";
+		String sql = "SELECT id,name,image,category,inventory,specification,price,content,status,create_time createTime,discount_price discountPrice,discounted FROM t_product where id =?";
 		try {
 			return qr.query(sql, new BeanHandler<Product>(Product.class), id);
 		} catch (Exception e) {
@@ -88,9 +91,9 @@ public class ProductHandle {
 		}
 	}
 
-	public PageBean<Product> queryPageByCategory(PageBean<Product> pb, Category category) {
-		int totalCount = this.getTotalCountBy(category);
-		pb.setTotalCount(totalCount);
+	public PageBean<Product> queryPageByCategory(PageBean<Product> pb, Category category,String name , Status status) {
+		int totalCount = this.getTotalCountBy(category,name,status);
+		pb.setTotal(totalCount);
 
 		List<Object> list = new ArrayList<Object>();
 
@@ -110,7 +113,7 @@ public class ProductHandle {
 		sb.append("     	p.id,");
 		sb.append("     	p.image,");
 		sb.append("     	p.category,");
-		sb.append("     	p.varieties,");
+		sb.append("     	p.name,");
 		sb.append("     	p.inventory,");
 		sb.append("     	p.specification,");
 		sb.append("     	p.price,");
@@ -121,23 +124,35 @@ public class ProductHandle {
 		sb.append("     	p.discounted");
 		sb.append(" FROM ");
 		sb.append("     	t_product p");
-		sb.append(" WHERE 	1=1 ");
+		sb.append(" WHERE 	1=1  ");
 		// 判断
 		if (category != null) {
 			sb.append("  AND p.category = ? ");
 			list.add(category.name());
 		}
+		if (StringUtils.isNoneBlank(name)) {
+			sb.append("  AND p.name like ? ");
+			list.add(MessageFormat.format("%{0}%", name));
+		}
+		if (status!=null) {
+			sb.append("  AND p.status = ? ");
+			list.add(status.name());
+		}
+		
 		sb.append(" limit ?,? ");
 		list.add(index);
 		list.add(count);
+	
 		try {
 			// 根据当前页，查询当前页数据(一页数据)
 			if (index >= 0) {
 				List<Product> pageData = qr.query(sb.toString(), new BeanListHandler<Product>(Product.class),
 						list.toArray());
 				// 设置到pb对象中
-				pb.setPageData(pageData);
+				pb.setRows(pageData);
 				return pb;
+			}else{
+				pb.setRows(Arrays.asList());
 			}
 
 		} catch (Exception e) {
@@ -147,7 +162,7 @@ public class ProductHandle {
 
 	}
 
-	public int getTotalCountBy(Category category) {
+	public int getTotalCountBy(Category category,String name,Status status) {
 		StringBuilder sb = new StringBuilder();
 		List<Object> list = new ArrayList<Object>();
 		sb.append(" SELECT");
@@ -158,6 +173,14 @@ public class ProductHandle {
 		if (category != null) {
 			sb.append("  AND p.category = ? ");
 			list.add(category.name());
+		}
+		if (StringUtils.isNoneBlank(name)) {
+			sb.append("  AND p.name like ? ");
+			list.add(MessageFormat.format("%{0}%", name));
+		}
+		if (status!=null) {
+			sb.append("  AND p.status = ? ");
+			list.add(status.name());
 		}
 		try {
 			// 执行查询， 返回结果的第一行的第一列

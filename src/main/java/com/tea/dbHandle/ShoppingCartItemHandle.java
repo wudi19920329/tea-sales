@@ -17,7 +17,6 @@ import com.tea.entity.ShoppingCartItem;
 import com.tea.enums.Category;
 import com.tea.enums.Specification;
 import com.tea.enums.Status;
-import com.tea.enums.Varieties;
 import com.tea.exception.ServiceException;
 import com.tea.utils.JdbcUtils;
 import com.tea.utils.PageBean;
@@ -55,8 +54,8 @@ public class ShoppingCartItemHandle {
 		}
 	}
 	
-	public ShoppingCartItem queryBy(Integer productId,Integer shoppingCartId) {
-		String sql = "select * from t_shopping_cart_item sci WHERE sci.product_id = ? AND sci.shopping_cart_id = ?";
+	public ShoppingCartItem queryNotPayingBy(Integer productId,Integer shoppingCartId) {
+		String sql = "select * from t_shopping_cart_item sci WHERE sci.product_id = ? AND sci.status='FOR_THE_PAYMENT' AND sci.shopping_cart_id = ?";
 		try {
 			return qr.query(sql, new BeanHandler<ShoppingCartItem>(ShoppingCartItem.class), productId,shoppingCartId);
 		} catch (Exception e) {
@@ -85,7 +84,7 @@ public class ShoppingCartItemHandle {
 
 	public PageBean<ShoppingCartItem> queryPageByCustomerId(PageBean<ShoppingCartItem> pb, Integer customerId) {
 		int totalCount = this.getTotalCountBy(customerId);
-		pb.setTotalCount(totalCount);
+		pb.setTotal(totalCount);
 		List<Object> params = new ArrayList<Object>();
 		if (pb.getCurrentPage() <= 0) {
 			pb.setCurrentPage(1); // 把当前页设置为1
@@ -105,7 +104,7 @@ public class ShoppingCartItemHandle {
 				+ "	p.price,                                                \n"
 				+ "	p.specification,                                        \n"
 				+ "	p.status,                                               \n"
-				+ "	p.varieties,                                            \n"
+				+ "	p.name,                                            		\n"
 				+ "	sc.id shoppingCartId,                                   \n"
 				+ "	sci.quantity quantity,                                  \n"
 				+ "	sci.id shoppingCartItemId                               \n"
@@ -134,7 +133,7 @@ public class ShoppingCartItemHandle {
 							product.setPrice(rs.getBigDecimal("price"));
 							product.setSpecification(Specification.valueOf(rs.getString("specification")));
 							product.setStatus(Status.valueOf(rs.getString("status")));
-							product.setVarieties(Varieties.valueOf(rs.getString("varieties")));
+							product.setName(rs.getString("name"));
 							ShoppingCart shoppingCart = new ShoppingCart();
 							shoppingCart.setId(rs.getInt("shoppingCartId"));
 							ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
@@ -148,7 +147,7 @@ public class ShoppingCartItemHandle {
 					}
 				}, params.toArray());
 				// 设置到pb对象中
-				pb.setPageData(pageData);
+				pb.setRows(pageData);
 				return pb;
 			}
 

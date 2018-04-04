@@ -9,19 +9,19 @@ import java.util.List;
 public class PageBean<T> {
 
 	private int currentPage = 1; // 当前页, 默认显示第一页
-	private int pageCount = 20; // 每页显示的行数(查询返回的行数), 默认每页显示4行
-	private int totalCount; // 总记录数
+	private int pageCount = 10; // 每页显示的行数(查询返回的行数), 默认每页显示4行
+	private int total; // 总记录数
 	private int totalPage; // 总页数 = 总记录数 / 每页显示的行数 (+ 1)
-	private List<T> pageData; // 分页查询到的数据
+	private List<T> rows; // 分页查询到的数据
 	private BigDecimal subTotalPrice;// 小计
 	private Integer subTotalCount;// 数量小计
 
 	// 返回总页数
 	public int getTotalPage() {
-		if (totalCount % pageCount == 0) {
-			totalPage = totalCount / pageCount;
+		if (total % pageCount == 0) {
+			totalPage = total / pageCount;
 		} else {
-			totalPage = totalCount / pageCount + 1;
+			totalPage = total / pageCount + 1;
 		}
 		return totalPage;
 	}
@@ -46,20 +46,22 @@ public class PageBean<T> {
 		this.pageCount = pageCount;
 	}
 
-	public int getTotalCount() {
-		return totalCount;
+	 
+
+	public int getTotal() {
+		return total;
 	}
 
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
+	public void setTotal(int total) {
+		this.total = total;
 	}
 
-	public List<T> getPageData() {
-		return pageData;
+	public List<T> getRows() {
+		return rows;
 	}
 
-	public void setPageData(List<T> pageData) {
-		this.pageData = pageData;
+	public void setRows(List<T> rows) {
+		this.rows = rows;
 	}
 
 	public BigDecimal getSubTotalPrice() {

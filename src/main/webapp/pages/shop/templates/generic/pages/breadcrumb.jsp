@@ -17,7 +17,7 @@ response.setDateHeader ("Expires", -1);
 					<ol class="breadcrumb">
 						  <li class="active">
 							  <i class="fa fa-home pr-10"></i>
-							  <a href="#">主页</a>
+							  <a href="/">主页</a>
 						  </li>
 						  <li>
 						    <a href="#"><%=Category.valueOf(request.getParameter("category")).getDescription()%></a>

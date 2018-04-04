@@ -24,7 +24,7 @@ response.setDateHeader ("Expires", -1);
 			<!-- include all header js and css -->
             <jsp:include page="/pages/shop/templates/generic/sections/shopLinks.jsp" />
 		    <script type="text/html" id="productBoxTemplate">
-				{{#pageData}}
+				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
@@ -44,7 +44,7 @@ response.setDateHeader ("Expires", -1);
    									</div>
 								</div>
 						</div>
-				{{/pageData}}
+				{{/rows}}
     		</script>            
  	</head> 
  	
@@ -73,7 +73,7 @@ response.setDateHeader ("Expires", -1);
 								</p>
 							</span>
 		               <c:choose>
-		                 <c:when test="${not empty customerOrders.pageData}">
+		                 <c:when test="${not empty customerOrders.rows}">
 		                 	<div id="shop">
 		
 							<!-- HISTORY TABLE -->
@@ -90,7 +90,7 @@ response.setDateHeader ("Expires", -1);
 								
 								<!-- /HISTORY TABLE -->
 								<tbody>
-								<c:forEach items="${customerOrders.pageData}" var="order" varStatus="orderStatus">
+								<c:forEach items="${customerOrders.rows}" var="order" varStatus="orderStatus">
 									<tr><!-- item -->
 										<td><a href="${customerOrder}?orderId=${order.id}">${order.id}</a></td>
 										<td><fmt:formatDate type="both" value="${order.createTime}" pattern="yyyy-MM-dd" /></td>

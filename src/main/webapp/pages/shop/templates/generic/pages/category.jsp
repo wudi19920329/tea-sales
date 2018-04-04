@@ -33,17 +33,17 @@ response.setDateHeader ("Expires", -1);
  
                 
 		    <script type="text/html" id="productBoxTemplate">
-				{{#pageData}}
+				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
 									<a href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html">
-										<img src="/{{image}}" alt="" />
+										<img src="{{image}}" alt="" />
 									</a>
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{varieties.desc}}</h3></a>
+									<a class="listing-product-name" href="javascript:void(0)"><h3 itemprop="name">{{name}}</h3></a>
 									<h4>
 										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
 										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}
@@ -53,7 +53,7 @@ response.setDateHeader ("Expires", -1);
    									</div>
 								</div>
 						</div>
-				{{/pageData}}
+				{{/rows}}
     		</script>            
                 
  	</head> 
@@ -328,7 +328,7 @@ response.setDateHeader ("Expires", -1);
 			 	}
 			 	
 			 	function buildProductsList(productList, divProductsContainer) {
-			 		log('Products-> ' + productList.pageData.length);
+			 		log('Products-> ' + productList.rows.length);
 					var productsTemplate = Hogan.compile(document.getElementById("productBoxTemplate").innerHTML);
 					var productsRendred = productsTemplate.render(productList);
 					$('#productsContainer').append(productsRendred);

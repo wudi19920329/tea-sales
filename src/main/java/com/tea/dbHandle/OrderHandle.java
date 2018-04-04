@@ -58,7 +58,7 @@ public class OrderHandle {
 
 	public PageBean<Order> queryPageByCustomerId(PageBean<Order> pb, Integer customerId) {
 		int totalCount = this.getTotalCountBy(customerId);
-		pb.setTotalCount(totalCount);
+		pb.setTotal(totalCount);
 		List<Object> params = new ArrayList<Object>();
 		if (pb.getCurrentPage() <= 0) {
 			pb.setCurrentPage(1); // 把当前页设置为1
@@ -100,7 +100,7 @@ public class OrderHandle {
 					}
 				}, params.toArray());
 				// 设置到pb对象中
-				pb.setPageData(pageData);
+				pb.setRows(pageData);
 				return pb;
 			}
 

@@ -115,9 +115,9 @@
 			 data: scItem, 
 			 dataType: 'json', 
 			 cache:false,
-			 error: function(e) { 
-				log('Error while adding to cart');
+			 error: function(jqXHR, textStatus, errorThrown) { 
 				hideSMLoading('#pageContainer');
+				alert(jqXHR.responseJSON.message);
 			 },
 			 success: function(cart) {
 			     cleanupMiniCart();

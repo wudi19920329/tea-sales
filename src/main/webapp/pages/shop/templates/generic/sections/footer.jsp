@@ -76,9 +76,9 @@
 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mar_b-30">
 				<div class="copyright text-left">
 					<p>
-						© Vintage Bags 2017-2018&nbsp;-&nbsp;Powered by <a
-							href="http://www.shopizer.com" class="footer-href"
-							target="_blank">Shopizer</a>
+						© Teas 2018-2019&nbsp;-&nbsp;Powered by <a
+							href="http://www.sias.edu.cn/aboutsias/33.html" class="footer-href"
+							target="_blank">郑州大学西亚斯国际学院</a>
 					</p>
 				</div>
 			</div>

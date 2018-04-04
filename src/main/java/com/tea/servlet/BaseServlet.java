@@ -18,6 +18,7 @@ import com.tea.Constants;
 import com.tea.dbHandle.ProductHandle;
 import com.tea.dbHandle.ShoppingCartHandle;
 import com.tea.dbHandle.ShoppingCartItemHandle;
+import com.tea.dbHandle.UserHandle;
 import com.tea.dbHandle.CustomerHandle;
 import com.tea.dbHandle.OrderHandle;
 import com.tea.exception.ExceptionInfo;
@@ -32,6 +33,7 @@ public abstract class BaseServlet extends HttpServlet {
 	protected ShoppingCartHandle shoppingCartHandle = BeanFactory.getInstance("shoppingCartHandle");
 	protected ShoppingCartItemHandle shoppingCartItemHandle = BeanFactory.getInstance("shoppingCartItemHandle");
 	protected OrderHandle orderHandle = BeanFactory.getInstance("orderHandle");
+	protected UserHandle userHandle = BeanFactory.getInstance("userHandle");
 	
 
 	@Override
@@ -43,6 +45,7 @@ public abstract class BaseServlet extends HttpServlet {
 		final String methodName = request.getParameter("method");
 		String xRequestedWith = request.getHeader(Constants.AJAX_HEADER);
 		boolean isAjax = StringUtils.isNotEmpty(xRequestedWith);
+		Boolean adminIgnoreAjaxHeader = Boolean.valueOf(StringUtils.isNoneBlank(request.getParameter("adminIgnoreAjaxHeader"))?request.getParameter("adminIgnoreAjaxHeader"):"true");
 		try {
 			// 获取当前运行类的字节码
 			Class<?> clazz = this.getClass();
@@ -53,7 +56,7 @@ public abstract class BaseServlet extends HttpServlet {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 			// agetShoppingCartItem(customer.getId())jax请求
-			if (isAjax) {
+			if (isAjax && adminIgnoreAjaxHeader) {
 				response.setContentType(Constants.AJAX_CONTENT_TYPE);
 				response.getOutputStream()
 						.write(MAPPER
@@ -69,7 +72,7 @@ public abstract class BaseServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (isAjax) {
+		if (isAjax && adminIgnoreAjaxHeader) {
 			response.setContentType(Constants.AJAX_CONTENT_TYPE);
 			MAPPER.setSerializationInclusion(Include.NON_NULL);
 			MAPPER.writeValue(response.getOutputStream(), returnValue);

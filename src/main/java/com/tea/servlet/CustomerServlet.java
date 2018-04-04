@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.tea.Constants;
 import com.tea.entity.Customer;
 import com.tea.entity.ShoppingCart;
+import com.tea.entity.User;
 import com.tea.exception.ServiceException;
 import com.tea.utils.MD5;
 
@@ -20,23 +21,19 @@ public class CustomerServlet extends BaseServlet {
 	public void logon(HttpServletRequest request, HttpServletResponse response) {
 		String email = request.getParameter("email").toLowerCase();
 		String password = request.getParameter("password");
-		Customer user = customerHandle.queryByEmail(email);
-		if (user == null) {
+		Customer customer = customerHandle.queryByEmail(email);
+		if (customer == null) {
 			throw new ServiceException("用户名错误。");
 		}
-		if (!user.getPassword().equals(MD5.getMD5(MD5.getMD5(password)))) {
+		if (!customer.getPassword().equals(MD5.getMD5(MD5.getMD5(password)))) {
 			throw new ServiceException("密码错误。");
 		}
-		/**
-		 * Login user
-		 */
-		Customer u = customerHandle.queryByEmail(email);
-		request.getSession().setAttribute(Constants.TEA_CUSTOMER, u);
+		request.getSession().setAttribute(Constants.TEA_CUSTOMER, customer);
 	}
-	
+
 	public Object logout(HttpServletRequest request, HttpServletResponse response) {
-		Customer customer= CustomerServlet.getOptionalLoginSession(request);
-		if(customer != null) {
+		Customer customer = CustomerServlet.getOptionalLoginSession(request);
+		if (customer != null) {
 			request.getSession().removeAttribute(Constants.TEA_CUSTOMER);
 		}
 		return "/";
@@ -51,7 +48,7 @@ public class CustomerServlet extends BaseServlet {
 		String email = request.getParameter("email").toLowerCase();
 		String password = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
-		if(StringUtils.isBlank(address)) {
+		if (StringUtils.isBlank(address)) {
 			throw new ServiceException("地址不能为空");
 		}
 
@@ -74,8 +71,27 @@ public class CustomerServlet extends BaseServlet {
 		request.getSession().setAttribute(Constants.TEA_CUSTOMER, u);
 	}
 
+	public void changePassword(HttpServletRequest request, HttpServletResponse response) {
+		Customer customer = CustomerServlet.getOptionalLoginSession(request);
+		if (customer == null) {
+			throw new ServiceException("请先登录！");
+		}
+		String password = request.getParameter("password");
+		String newPassword = request.getParameter("newPassword");
+		String confirmPassword = request.getParameter("confirmPassword");
+		if (!MD5.getMD5(MD5.getMD5(password)).equals(customer.getPassword())) {
+			throw new ServiceException("旧密码错误！");
+		}
+		if (!newPassword.equals(confirmPassword)) {
+			throw new ServiceException("两次输入的密码不一致！");
+		}
+		customer.setPassword(MD5.getMD5(MD5.getMD5(newPassword)));
+		customerHandle.update(customer);
+	}
+
 	/**
-	 * Return LoginSession if found in HttpSession scope, else return NULL value.
+	 * Return LoginSession if found in HttpSession scope, else return NULL
+	 * value.
 	 */
 	public static Customer getOptionalLoginSession(HttpServletRequest req) {
 		Customer result = null;

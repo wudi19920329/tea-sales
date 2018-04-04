@@ -29,7 +29,7 @@
 <jsp:include page="/pages/shop/templates/generic/sections/shopLinks.jsp" />
 
 <script type="text/html" id="productBoxTemplate">
-				{{#pageData}}
+				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
@@ -49,7 +49,7 @@
    									</div>
 								</div>
 						</div>
-				{{/pageData}}
+				{{/rows}}
     		</script>
  
 

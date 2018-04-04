@@ -22,7 +22,6 @@ response.setDateHeader ("Expires", -1);
 			<link href="<c:url value="/resources/citydata/css/city-picker.css" />" rel="stylesheet">
 			<!-- include all header js and css -->
             <jsp:include page="/pages/shop/templates/generic/sections/shopLinks.jsp" />
-			<!-- requires functions.jsp -->
 			<script type="text/javascript" src="<c:url value="/resources/js/jQuery.validate.js" />"></script>
 			<script type="text/javascript" src="<c:url value="/resources/citydata/js/city-picker.data.js" />"></script>
 			<script type="text/javascript" src="<c:url value="/resources/citydata/js/city-picker.js" />"></script>    
@@ -173,12 +172,7 @@ response.setDateHeader ("Expires", -1);
 			        var isEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;  
 			        return this.optional(element)||(isEmail.test(value));  
 			    },"*请输入正确的邮箱。");  
-				
-				// 匹配密码
-			    jQuery.validator.addMethod("isPwd", function(value, element) {
-			        var str = value;
-			        return this.optional(element) || /^\d{6}$/.test(str);
-			    }, "密码为6位数字。");	
+			 
 			 	// 匹配邮编
 			    jQuery.validator.addMethod("isPostcode", function(value, element) {
 			        var str = value;
@@ -211,7 +205,7 @@ response.setDateHeader ("Expires", -1);
 			            },
 			            password : {
 			                required : true,
-			                isPwd : true
+			                minlength : 6
 			            },
 			            confirmPassword : {
 			                required : true,
@@ -239,7 +233,7 @@ response.setDateHeader ("Expires", -1);
 			            },
 			            password : {
 			                required : "请输入密码。",
-			                minlength : jQuery.format("密码不能小于6个字符。")
+			                minlength : "密码不能小于6个字符。"
 			            },
 			            confirmPassword : {
 			                required : "请输入确认密码。",

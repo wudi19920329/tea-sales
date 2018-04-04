@@ -1,0 +1,21 @@
+[
+    
+   
+    {
+        "id": 1, 
+        "parentId": 1, 
+        "seq": 3, 
+        "iconUrl": "", 
+        "menuName": "门店管理", 
+        "src": "", 
+        "levelNum": 1, 
+        "isLeaf": false, 
+        "nodePath": null, 
+        "remark": null, 
+        "type": 1, 
+        "state": "colsed", 
+        "ck": false, 
+        "children": null
+    }
+    
+]

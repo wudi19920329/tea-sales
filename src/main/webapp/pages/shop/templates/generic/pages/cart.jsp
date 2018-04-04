@@ -28,7 +28,7 @@ response.setDateHeader ("Expires", -1);
 			<script src="<c:url value="/resources/js/jquery.alphanumeric.pack.js" />"></script>
                 
 		    <script type="text/html" id="productBoxTemplate">
-				{{#pageData}}
+				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
@@ -38,7 +38,7 @@ response.setDateHeader ("Expires", -1);
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{varieties.desc}}</h3></a>
+									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{name}}</h3></a>
 									<h4>
 										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
 										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}
@@ -48,7 +48,7 @@ response.setDateHeader ("Expires", -1);
    									</div>
 								</div>
 						</div>
-				{{/pageData}}
+				{{/rows}}
     		</script>            
                 
  	</head>
@@ -83,7 +83,7 @@ response.setDateHeader ("Expires", -1);
 				<c:choose>
 					<c:when test="${not empty sessionScope.cart}">
 						<c:choose>
-							<c:when test="${not empty sessionScope.cart.pageData}">
+							<c:when test="${not empty sessionScope.cart.rows}">
 								<!-- cart-main-area start -->
 								<div class="cart-main-area ptb-40">
 									<div class="container">
@@ -95,7 +95,7 @@ response.setDateHeader ("Expires", -1);
 									 -->
 													<table id="mainCartTable"
 														class="table table-hover table-condensed">
-														<c:forEach items="${sessionScope.cart.pageData}"
+														<c:forEach items="${sessionScope.cart.rows}"
 															var="shoppingCartItem" varStatus="itemStatus">
 															<c:if test="${itemStatus.index eq 0}">
 																<thead>
@@ -115,12 +115,12 @@ response.setDateHeader ("Expires", -1);
 																			<div class="col-sm-4 hidden-xs">
 																				<c:if test="${shoppingCartItem!=null}">
 																					<img width="60"
-																						src="/<c:url value="${shoppingCartItem.product.image}"/>"
+																						src="<c:url value="${shoppingCartItem.product.image}"/>"
 																						class=""/>
 																				</c:if>
 																			</div>
 																			<div class="col-sm-8">
-																				<span class="nomargin"><strong>${shoppingCartItem.product.varieties.desc}</strong></span>
+																				<span class="nomargin"><strong>${shoppingCartItem.product.name}</strong></span>
 																			</div>
 																		</div>
 																	</td>

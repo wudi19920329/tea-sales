@@ -27,7 +27,7 @@ response.setDateHeader ("Expires", -1);
             <jsp:include page="/pages/shop/templates/generic/sections/shopLinks.jsp" />
                 
 		    <script type="text/html" id="productBoxTemplate">
-				{{#pageData}}
+				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
@@ -37,7 +37,7 @@ response.setDateHeader ("Expires", -1);
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{varieties.desc}}</h3></a>
+									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{name}}</h3></a>
 									<h4>
 										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
 										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}
@@ -47,7 +47,7 @@ response.setDateHeader ("Expires", -1);
    									</div>
 								</div>
 						</div>
-				{{/pageData}}
+				{{/rows}}
     		</script>            
                 
  	</head>
@@ -68,7 +68,7 @@ response.setDateHeader ("Expires", -1);
 				<section id="home-banner">
 					<article>
 			
-						<div class="banner-text">
+				<!-- 		<div class="banner-text">
 							<h2>Vintage bags</h2>
 							<p>Summer styles available</p>
 							<div class="slider-button store-btn button-link">
@@ -76,7 +76,7 @@ response.setDateHeader ("Expires", -1);
 									<a class="more" href="#">More details</a>
 								</div>
 							</div>
-						</div>
+						</div> -->
 			
 						<div class="image-content">
 							<img alt="text"
@@ -168,7 +168,7 @@ response.setDateHeader ("Expires", -1);
 							$('#featuredItemsContainer').LoadingOverlay("hide", true);
 							//call init bindings
 							initBindings();
-							setProductRating(productList.pageData);
+							setProductRating(productList.rows);
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
 							$(divProductsContainer).hideLoading();

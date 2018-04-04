@@ -31,18 +31,18 @@
 <!-- Mini shopping cart JS template -->
 <script type="text/html" id="miniCartTemplate">
 					 
-                          {{#pageData}}
+                          {{#rows}}
                           <li>
 									<div class="cart-img">
 											{{#product.image}}
-												<img src="<c:out value="${pageContext.servletContext.contextPath}" />/{{product.image}}">
+												<img src="<c:out value="${pageContext.servletContext.contextPath}" />{{product.image}}">
 											{{/product.image}}
 											{{^product.image}}
 												&nbsp
 											{{/product.image}}
 									</div>	
 									<div class="cart-content">
-											<h4><a href="#">{{quantity}} x {{product.varieties.desc}}</a></h4>
+											<h4><a href="#">{{quantity}} x {{product.name}}</a></h4>
 											<span class="cart-price">￥{{product.price}}</span>
 									</div>
 									<div class="cart-del">
@@ -51,7 +51,7 @@
 							</li>
                             
                            
-                   			{{/pageData}}
+                   			{{/rows}}
 							{{#subTotalCount}}
 							<li>&nbsp;</li>
 							<li class="total-price">共计&nbsp;￥{{subTotalPrice}}</li>
@@ -59,9 +59,9 @@
 									<a href="/shoppingCart?method=displayShoppingCart" >结账<i class="fa fa-angle-right"></i></a>
 							</li>
 							{{/subTotalCount}}
-					 	{{^pageData}}
+					 	{{^rows}}
 							<h4 style="text-align: center;color:#666666;margin-top:10px;margin-bottom:10px;">您的购物车是空的</h4>
-					 	{{/pageData}}
+					 	{{/rows}}
 </script>
 
 <!-- mini cart label button template -->
@@ -167,21 +167,6 @@
 				</div>
 
 				<div class="col-lg-4 col-md-4 col-sm-9 col-xs-12">
-					<!-- search box -->
-					<div class="input-group menu-search-box">
-						<input type="text" class="form-control typeahead" type="search"
-							name="q" id="searchField" placeholder="搜索" value="" /> <span
-							class="input-group-btn">
-							<button class="btn btn-default searchButton" type="submit">
-								搜索</button>
-						</span>
-						<!-- important for submitting search -->
-						<form id="hiddenSearchForm" method="post"
-							action="<c:url value="/shop/search/search.html"/>">
-							<input type="hidden" id="hiddenQuery" name="q">
-						</form>
-					</div>
-
 					<!-- Shopping cart -->
 					<div class="header-bottom-right">
 						<div class="shop-cart" id="miniCartSummary"></div>

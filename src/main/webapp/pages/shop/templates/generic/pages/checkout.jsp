@@ -1,4 +1,3 @@
-
 <%
 	response.setCharacterEncoding("UTF-8");
 	response.setHeader("Cache-Control", "no-cache");
@@ -29,7 +28,7 @@
 <jsp:include page="/pages/shop/templates/generic/sections/shopLinks.jsp" />
 
 <script type="text/html" id="productBoxTemplate">
-				{{#pageData}}
+				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
@@ -39,7 +38,7 @@
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{varieties.desc}}</h3></a>
+									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{name}}</h3></a>
 									<h4>
 										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
 										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}
@@ -49,7 +48,7 @@
    									</div>
 								</div>
 						</div>
-				{{/pageData}}
+				{{/rows}}
     		</script>
 
 <script>
@@ -66,6 +65,11 @@
 		})();
 		
 		$("#submitOrder").click(function(){
+			 
+			if(!document.getElementById('customerAgreed').checked) {
+			    alert("请勾选用户协议！");
+			    return;
+			} 
 			var params = {
 				method:"submit",
 				description:$("#description").val(),
@@ -209,11 +213,11 @@
 										</tr>
 									</thead>
 									<tbody id="summaryRows">
-										<c:forEach items="${sessionScope.cart.pageData}"
+										<c:forEach items="${sessionScope.cart.rows}"
 											var="shoppingCartItem">
 											<tr class="cart_item">
 												<td class="product-name">
-													${shoppingCartItem.product.varieties.desc} <strong
+													${shoppingCartItem.product.name} <strong
 													class="product-quantity"> x
 														${shoppingCartItem.quantity}</strong>
 												</td>
@@ -286,13 +290,10 @@
 
 								<!-- customer agreement -->
 								<div class="checkout-box" id="customerAgreementSection">
-									<label id="customerAgreement" class="checkbox"> <input
-										id="customerAgreed" name="customerAgreed" class="required"
-										title="Please agree to our terms and conditions"
-										type="checkbox" value="true"><input type="hidden"
-											name="_customerAgreed" value="on"> <a
-												href="javascript:return false;" id="clickAgreement">我同意条款和条件</a></label>
-									<div id="customer-agreement-area">用户协议不存在</div>
+									<label id="customerAgreement" class="checkbox"> 
+										<input id="customerAgreed" name="customerAgreed" class="required" title="请同意用户协议" type="checkbox" value="true"/>
+										<input type="hidden" name="_customerAgreed" value="on"/> <a href="javascript:void(0);">我同意条款和条件</a>
+									</label>
 								</div>
 
 								<div class="order-button-payment">
@@ -307,7 +308,7 @@
 		</div>
 	</div>
 	<!-- checkout-area end -->
-
+ 
 
 
 	<jsp:include page="/pages/shop/templates/generic/sections/footer.jsp" />

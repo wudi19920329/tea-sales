@@ -32,7 +32,7 @@ public class OrderServlet extends BaseServlet {
 		ShoppingCart shoppingCart = shoppingCartHandle.queryByCustomerId(customer.getId());
 		// 更新购物车商品的状态
 		PageBean<ShoppingCartItem> carts = (PageBean<ShoppingCartItem>) request.getSession().getAttribute("cart");
-		carts.getPageData().forEach(cartItem -> {
+		carts.getRows().forEach(cartItem -> {
 			cartItem.setStatus(ShoppingCartItemStatus.PAYMENT_HAS_BEEN);
 			shoppingCartItemHandle.updateStatus(cartItem);
 		});

@@ -3,24 +3,45 @@ package com.tea.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tea.enums.Category;
 import com.tea.enums.Specification;
 import com.tea.enums.Status;
-import com.tea.enums.Varieties;
 
 public class Product {
 	private Integer id;// 主键id
 	private String image;// 图片地址
 	private Category category;// 分类
-	private Varieties varieties;// 品种
+	private String name;// 品种
 	private Long inventory;// 库存
 	private Specification specification;// 单位
 	private BigDecimal price;// 价格
 	private String content;// 描述
-	private Status status = Status.FAYE_FLY;// 商品状态
+	private Status status = Status.TO_SELL;// 商品状态
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	private BigDecimal discountPrice;// 折后价格
-	private boolean discounted;// 是否打折
+	private Boolean discounted = Boolean.FALSE;// 是否打折
+
+	public Product() {
+		super();
+	}
+
+	public Product(String image, Category category, String name, Long inventory, Specification specification,
+			BigDecimal price, String content,  BigDecimal discountPrice,
+			Boolean discounted) {
+		super();
+		this.image = image;
+		this.category = category;
+		this.name = name;
+		this.inventory = inventory;
+		this.specification = specification;
+		this.price = price;
+		this.content = content;
+		this.createTime = new Date();
+		this.discountPrice = discountPrice;
+		this.discounted = discounted;
+	}
 
 	public Integer getId() {
 		return id;
@@ -44,14 +65,6 @@ public class Product {
 
 	public void setCategory(Category category) {
 		this.category = category;
-	}
-
-	public Varieties getVarieties() {
-		return varieties;
-	}
-
-	public void setVarieties(Varieties varieties) {
-		this.varieties = varieties;
 	}
 
 	public Long getInventory() {
@@ -116,6 +129,14 @@ public class Product {
 
 	public void setDiscounted(boolean discounted) {
 		this.discounted = discounted;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
