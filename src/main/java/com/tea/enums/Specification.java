@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT, timezone = "Asia/Shanghai")
 public enum Specification {
-	SMALL("小包", new BigDecimal("500"), "k"),
+	SMALL("小包", new BigDecimal("500"), "g"),
 
-	BIG("大包", new BigDecimal("1000"), "k");
+	BIG("大包", new BigDecimal("1000"), "g");
 
 	private String desc;
 	private BigDecimal weight;

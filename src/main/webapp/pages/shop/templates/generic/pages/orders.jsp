@@ -92,7 +92,7 @@ response.setDateHeader ("Expires", -1);
 								<tbody>
 								<c:forEach items="${customerOrders.rows}" var="order" varStatus="orderStatus">
 									<tr><!-- item -->
-										<td><a href="${customerOrder}?orderId=${order.id}">${order.id}</a></td>
+										<td><a href="javascript:void(0)">${order.id}</a></td>
 										<td><fmt:formatDate type="both" value="${order.createTime}" pattern="yyyy-MM-dd" /></td>
 										<td>￥${order.payableAmount}</td>
 										<td>${order.orderStatus.description}</td>

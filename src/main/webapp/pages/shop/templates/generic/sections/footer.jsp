@@ -21,7 +21,7 @@
 					<ul>
 						<address>
 							<div itemscope itemtype="http://schema.org/Organization">
-								<strong><span itemprop="name">Vintage Bags</span></strong><br />
+								<strong><span itemprop="name">Teas</span></strong><br />
 								<div itemprop="address" itemscope
 									itemtype="http://schema.org/PostalAddress">
 									<span itemprop="streetAddress">黄河路90号 郑州</span><br /> <span
@@ -51,9 +51,9 @@
 								class="current"> <span class="name">${category.getDescription()}</span>
 							</a></li>			
 							</c:forEach>
-							<li class=""><a href="/shop/store/contactus.html">联系我们</a></li>
-							<li><a href="/shop/customer/registration.html">注册</a></li>
-							<li><a href="/shop/customer/customLogon.html">登陆</a></li>
+							<li class=""><a href="http://www.sias.edu.cn/aboutsias/33.html">联系我们</a></li>
+							<li><a href="/pages/shop/templates/generic/pages/register.jsp">注册</a></li>
+							<li><a href="/pages/shop/templates/generic/pages/logon.jsp">登陆</a></li>
 
 
 						</ul>

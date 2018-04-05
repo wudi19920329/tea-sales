@@ -50,5 +50,5 @@
     	<table id="datagrid"></table>
     </div>
 </body>
-<script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath()%>/resources/js/aylson/mem/giftConfig.js?date=2016090903"></script>
+<script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath()%>/resources/js/aylson/mem/product.js?date=2016090903"></script>
 </html>

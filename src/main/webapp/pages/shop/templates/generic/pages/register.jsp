@@ -161,7 +161,6 @@ response.setDateHeader ("Expires", -1);
 			    });
 			
 				
-				
 				// 手机号码验证
 			    jQuery.validator.addMethod("isPhone", function(value, element) {
 			        var length = value.length;
@@ -209,8 +208,8 @@ response.setDateHeader ("Expires", -1);
 			            },
 			            confirmPassword : {
 			                required : true,
-			                isPwd : true,
-			                equalTo : "#password"
+			                equalTo : "#password",
+			                minlength : 6
 			            } 
 			        },
 			        messages : {
@@ -237,7 +236,7 @@ response.setDateHeader ("Expires", -1);
 			            },
 			            confirmPassword : {
 			                required : "请输入确认密码。",
-			                minlength : "确认密码不能小于5个字符。",
+			                minlength : "确认密码不能小于6个字符。",
 			                equalTo : "两次输入密码不一致不一致。"
 			            } 
 			        },

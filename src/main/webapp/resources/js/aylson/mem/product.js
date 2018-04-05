@@ -43,7 +43,7 @@
 				field : 'name',
 				align:'center',
 				sortable:true,
-				width : 150
+				width : 100
 			}, {
 				title : '产品类别',
 				field : 'category',
@@ -51,12 +51,12 @@
 				formatter:function(value,row,index){
 					return value.description;
 				},
-				width : 150
+				width : 50
 			}, {
 				title : '图片地址',
 				field : 'image',
 				align:'center',
-				width : 450
+				width : 250
 			},{
 				title : '库存',
 				field : 'inventory',
@@ -129,7 +129,7 @@
 			}, {field : 'opt',
 				title:'操作选项',
 				align:'center',
-				width : 300,
+				width : 150,
 				formatter:function(value,row,index){
 					var handleHtml = "";
 					if(row.status.name == 'TO_SELL'){
