@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2018-04-04 18:00:21
+Date: 2018-04-17 17:59:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -86,32 +86,32 @@ CREATE TABLE `t_product` (
   `discount_price` decimal(20,2) NOT NULL DEFAULT '0.00' COMMENT '折后价格',
   `discounted` bit(1) NOT NULL COMMENT '是否打折',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of t_product
 -- ----------------------------
 INSERT INTO `t_product` VALUES ('1', '英山云雾茶', '/upload/product_images/YINGSHAN_CLOUD_TEA.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '0.00', '');
-INSERT INTO `t_product` VALUES ('2', '西湖龙井', '/upload/product_images/THE_WEST_LAKE_LONGJING.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-04-01 14:53:45', '500.02', '');
-INSERT INTO `t_product` VALUES ('3', '峨眉雪芽', '/upload/product_images/EMEI_SNOW_BUD.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('4', '惠明茶', '/upload/product_images/MEPHENTERMINE_TEA.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('5', '湄潭翠芽', '/upload/product_images/MAE_TAM_GREEN_BUD.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('6', '兰馨雀舌', '/upload/product_images/LANXIN_SPARROW_TONGUE.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('7', '黑砖', '/upload/product_images/BLACK_BRICK.jpg', 'DARK_GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('2', '西湖龙井', '/upload/product_images/THE_WEST_LAKE_LONGJING.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-04-01 14:53:45', '500.02', '');
+INSERT INTO `t_product` VALUES ('3', '峨眉雪芽', '/upload/product_images/EMEI_SNOW_BUD.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('4', '惠明茶', '/upload/product_images/MEPHENTERMINE_TEA.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('5', '湄潭翠芽', '/upload/product_images/MAE_TAM_GREEN_BUD.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('6', '兰馨雀舌', '/upload/product_images/LANXIN_SPARROW_TONGUE.jpg', 'GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('7', '黑砖', '/upload/product_images/BLACK_BRICK.jpg', 'DARK_GREEN_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('8', '茯砖', '/upload/product_images/EIGHT_BRICK.jpg', 'DARK_GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('9', '青砖茶', '/upload/product_images/GREEN_TEA.jpg', 'DARK_GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('10', '三尖', '/upload/product_images/THREE_POINT.jpg', 'DARK_GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('11', '花砖', '/upload/product_images/TILE.jpg', 'DARK_GREEN_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('12', '阿萨姆红茶', '/upload/product_images/ASSAM_BLACK_TEA.jpg', 'BLACK_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('12', '阿萨姆红茶', '/upload/product_images/ASSAM_BLACK_TEA.jpg', 'BLACK_TEA', '10000', 'SMALL', '500.15', '123123213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('13', '大吉岭红茶', '/upload/product_images/DARJEELING_TEA.jpg', 'BLACK_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('14', '祁门红茶', '/upload/product_images/QIINEN_BLACK_TEA.jpg', 'BLACK_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('14', '祁门红茶', '/upload/product_images/QIINEN_BLACK_TEA.jpg', 'BLACK_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('15', '乌巴-斯里兰卡', '/upload/product_images/UZBEKISTAN_SRI_LANKA.jpg', 'BLACK_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('16', '海马宫茶', '/upload/product_images/HIPPOCAMPAL_PALACE_TEA.jpg', 'YELLOW_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('17', '霍山黄芽茶', '/upload/product_images/HUOSHAN_YELLOW_FLOWER_TEA.jpg', 'YELLOW_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('18', '君山银针茶', '/upload/product_images/JUNSHAN_ISLAND_SILVER_NEEDLE_TEA.jpg', 'YELLOW_TEA', '10000', 'SMALL', '500.15', null, 'TO_SELL', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('18', '君山银针茶', '/upload/product_images/JUNSHAN_ISLAND_SILVER_NEEDLE_TEA.jpg', 'YELLOW_TEA', '10000', 'SMALL', '500.15', '213213', 'TO_SELL', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('19', '路丁茶', '/upload/product_images/LU_DING_TEA.jpg', 'YELLOW_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('20', '远安黄茶', '/upload/product_images/YUANAN_YELLOW_TEA.jpg', 'YELLOW_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
-INSERT INTO `t_product` VALUES ('21', '安溪铁观音', '/upload/product_images/ANXI_TIEGUANYIN.jpg', 'OOLONG_TEA', '10000', 'SMALL', '500.15', null, 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
+INSERT INTO `t_product` VALUES ('21', '安溪铁观音', '/upload/product_images/ANXI_TIEGUANYIN.jpg', 'OOLONG_TEA', '10000', 'SMALL', '500.15', '213213', 'FAYE_FLY', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('22', '罗汉沉香', '/upload/product_images/LOHAN_ALOES.jpg', 'OOLONG_TEA', '10000', 'SMALL', '500.15', null, 'TO_SELL', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('23', '东方美人', '/upload/product_images/ORIENTAL_BEAUTY.jpg', 'OOLONG_TEA', '10000', 'SMALL', '500.15', null, 'TO_SELL', '2018-03-28 17:08:48', '500.03', '');
 INSERT INTO `t_product` VALUES ('24', '凤凰水仙', '/upload/product_images/PHOENIX_NARCISSUS.jpg', 'OOLONG_TEA', '10000', 'SMALL', '500.15', null, 'TO_SELL', '2018-03-28 17:08:48', '500.03', '');
