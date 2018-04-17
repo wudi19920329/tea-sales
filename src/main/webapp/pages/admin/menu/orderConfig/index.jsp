@@ -18,24 +18,14 @@
 </head>
 <body class="easyui-layout" fit="true">
 	<!-- 角色管理 查询 --> 
-	<div region="north"  id="giftConfigArea" style="white-space: nowrap;padding: 5px; height: 50px;">
+	<div region="north"   style="white-space: nowrap;padding: 5px; height: 50px;">
 		<div style="margin-bottom: 5px">
-			<form id="productConfigSearchForm"  method="post">
+			<form id="orderConfigSearchForm"  method="post">
 				<table class="table_content"   border="0" >
 					<tr>
-						<td class="tar" >产品名称：</td>
+						<td class="tar" >客户昵称：</td>
 						<td class="tal" >
-							<input class="easyui-textbox" name="name" prompt="模糊查询"/>
-						</td>
-						<td class="tar" >类别：</td>
-						<td class="tal">
-							<select name="category" class="easyui-combobox"  editable="false">
-								<option value="">全部</option> 
-								<c:set var="categorys" value="<%=com.tea.enums.Category.values()%>"/>
-								<c:forEach var="category" items="${categorys}">
-									<option value="${category.getName()}" >${category.getDescription() }</option>			
-								</c:forEach>
-							</select>
+							<input class="easyui-textbox" name="customerName" prompt="模糊查询"/>
 						</td>
 					    <td style="padding-left:20px">
 							<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>
@@ -50,5 +40,5 @@
     	<table id="datagrid"></table>
     </div>
 </body>
-<script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath()%>/resources/js/aylson/mem/product.js?date=2016090903"></script>
+<script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath()%>/resources/js/aylson/mem/order.js?date=2016090903"></script>
 </html>

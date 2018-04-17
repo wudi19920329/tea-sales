@@ -29,15 +29,15 @@ response.setDateHeader ("Expires", -1);
 		    <script type="text/html" id="productBoxTemplate">
 				{{#rows}}
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
-								<div class="thumbnail product-img">
+								<div class="thumbnail product-img" >
                                     {{#image}}
-									<a href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html">
-										<img src="{{image}}" alt="" />
+									<a href="javascript:void(0)" title="{{content}}">
+										<img src="{{image}}"   />
 									</a>
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html"><h3 itemprop="name">{{name}}</h3></a>
+									<a class="listing-product-name" href="javascript:void(0)"><h3 itemprop="name">{{name}} {{specification.desc}}（{{specification.weight}}{{specification.unit}}）</h3></a>
 									<h4>
 										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
 										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}

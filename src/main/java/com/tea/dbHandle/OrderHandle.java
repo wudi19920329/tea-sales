@@ -3,6 +3,7 @@ package com.tea.dbHandle;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -36,12 +37,39 @@ public class OrderHandle {
 
 	}
 
-	  
+	public void update(Order order) {
+		String sql = "UPDATE t_order SET payable_amount=?,order_status=?,express_delivery_mode=?,description=?,update_time=? WHERE id =?";
+		try {
+			qr.update(sql, order.getPayableAmount(), order.getOrderStatus().name(),
+					order.getExpressDeliveryMode().name(), order.getDescription(), new Date(), order.getId());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public Order queryById(Integer id) {
 		String sql = "select * from t_orders t WHERE t.id = ?";
 		try {
-			return qr.query(sql, new BeanHandler<Order>(Order.class), id);
+			return qr.query(sql, new BeanHandler<Order>(Order.class), new ResultSetHandler<Order>() {
+				@Override
+				public Order handle(ResultSet rs) throws SQLException {
+					Order order = new Order();
+					order.setId(rs.getInt("id"));
+					ShoppingCart shoppingCart = new ShoppingCart();
+					shoppingCart.setId(rs.getInt("shopping_cart_id"));
+					Customer customer = new Customer();
+					customer.setId(rs.getInt("customer_id"));
+					order.setDescription(rs.getString("description"));
+					order.setExpressDeliveryMode(ExpressDeliveryMode.valueOf(rs.getString("express_delivery_mode")));
+					order.setId(rs.getInt("id"));
+					order.setOrderNumber(rs.getString("order_number"));
+					order.setOrderStatus(OrderStatus.valueOf(rs.getString("order_status")));
+					order.setPayableAmount(rs.getBigDecimal("payable_amount"));
+					order.setShoppingCart(new ShoppingCart());
+					order.setUpdateTime(rs.getDate("update_time"));
+					return order;
+				}
+			}, id);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -71,23 +99,32 @@ public class OrderHandle {
 		int count = pb.getPageCount(); // 查询返回的行数
 
 		// 分页查询数据; 把查询到的数据设置到pb对象中
-		String sql = "select * from t_order o join t_customer c on c.id = o.customer_id AND c.id = ? limit ?,? ";
-		params.add(customerId);
+		StringBuffer sql = new StringBuffer("select * from t_order o join t_customer c on c.id = o.customer_id   ");
+		// 判断
+		if (customerId != null) {
+			sql.append("  AND c.id = ? ");
+			params.add(customerId);
+		}
+		sql.append(" limit ?,? ");
 		params.add(index);
 		params.add(count);
 		try {
 			// 根据当前页，查询当前页数据(一页数据)
 			if (index >= 0) {
-				List<Order> pageData = qr.query(sql, new ResultSetHandler<List<Order>>() {
+				List<Order> pageData = qr.query(sql.toString(), new ResultSetHandler<List<Order>>() {
 					final List<Order> ORDERS = new ArrayList<Order>();
+
 					@Override
 					public List<Order> handle(ResultSet rs) throws SQLException {
 						while (rs.next()) {
 							Order order = new Order();
 							order.setCreateTime(rs.getDate("create_time"));
-							order.setCustomer(new Customer());
+							Customer customer = new Customer();
+							customer.setNickName(rs.getString("nick_name"));
+							order.setCustomer(customer);
 							order.setDescription(rs.getString("description"));
-							order.setExpressDeliveryMode(ExpressDeliveryMode.valueOf(rs.getString("express_delivery_mode")));
+							order.setExpressDeliveryMode(
+									ExpressDeliveryMode.valueOf(rs.getString("express_delivery_mode")));
 							order.setId(rs.getInt("id"));
 							order.setOrderNumber(rs.getString("order_number"));
 							order.setOrderStatus(OrderStatus.valueOf(rs.getString("order_status")));
@@ -112,10 +149,17 @@ public class OrderHandle {
 	}
 
 	public int getTotalCountBy(Integer customerId) {
-		String sql = "select count(1) from t_order o join t_customer c on c.id = o.customer_id AND c.id = ?" ;
+		StringBuffer sql = new StringBuffer(
+				"select count(1) from t_order o join t_customer c on c.id = o.customer_id  ");
+		List<Object> list = new ArrayList<Object>();
+		// 判断
+		if (customerId != null) {
+			sql.append("  AND c.id = ? ");
+			list.add(customerId);
+		}
 		try {
 			// 执行查询， 返回结果的第一行的第一列
-			Long count = qr.query(sql, new ScalarHandler<Long>(), customerId);
+			Long count = qr.query(sql.toString(), new ScalarHandler<Long>(), list.toArray());
 			return count.intValue();
 		} catch (Exception e) {
 			throw new ServiceException("客户订单分页查询异常");

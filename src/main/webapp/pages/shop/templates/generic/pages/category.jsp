@@ -37,13 +37,13 @@ response.setDateHeader ("Expires", -1);
                         <div itemscope itemtype="http://schema.org/Enumeration" class="col-md-COLUMN-SIZE col-sm-6 col-xs-12 product"  item-name="{{name}}" item-price="{{price}}" data-id="{{id}}">
 								<div class="thumbnail product-img">
                                     {{#image}}
-									<a href="<c:url value="/shop/product/" />{{description.friendlyUrl}}.html">
+									<a href="javascript:void(0)" title="{{content}}">
 										<img src="{{image}}" alt="" />
 									</a>
 									{{/image}}
 								</div>
 								<div class="product-content text-center">
-									<a class="listing-product-name" href="javascript:void(0)"><h3 itemprop="name">{{name}}</h3></a>
+									<a class="listing-product-name" href="javascript:void(0)"><h3 itemprop="name">{{name}} {{specification.desc}}（{{specification.weight}}{{specification.unit}}）</h3></a>
 									<h4>
 										{{#discounted}}<del>￥{{price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{discountPrice}}</span>{{/discounted}}
 										{{^discounted}}<span itemprop="price">￥{{price}}</span>{{/discounted}}
@@ -150,27 +150,17 @@ response.setDateHeader ("Expires", -1);
 		              					<h3><c:out value="${parent.description.name}" /></h3>
 		             				</c:if>
 									<ul class="nav nav-list">
-									<c:forEach items="${subCategories}" var="subCategory">
-										<c:if test="${subCategory.visible}">
-		              					<li>
-		              					<a href="<c:url value="/shop/category/${subCategory.description.friendlyUrl}.html"/>"><i class="fa fa-angle-right"></i> <c:out value="${subCategory.description.name}" />
-		              						<c:if test="${subCategory.productCount>0}">&nbsp;<span class="countItems">(<c:out value="${subCategory.productCount}" />)</span></c:if></a>
-		              					</li>
-		              					</c:if>
-		              				</c:forEach>
+										<c:forEach items="${subCategories}" var="subCategory">
+											<c:if test="${subCategory.visible}">
+			              					<li>
+			              					<a href="javascript:void(0)"><i class="fa fa-angle-right"></i> <c:out value="${subCategory.description.name}" />
+			              						<c:if test="${subCategory.productCount>0}">&nbsp;<span class="countItems">(<c:out value="${subCategory.productCount}" />)</span></c:if></a>
+			              					</li>
+			              					</c:if>
+			              				</c:forEach>
 									</ul>
-									<br/>
-									<c:if test="${fn:length(manufacturers) > 0}">
-							          	<h3>制造商列表</h3>
-							            <ul class="nav nav-list">
-							              <li class="nav-header"></li>
-							              <c:forEach items="${manufacturers}" var="manufacturer">
-							              	<li>
-							              		<a href="javascript:filterCategory('BRAND','${manufacturer.id}')"><i class="fa fa-angle-right"></i>&nbsp;<c:out value="${manufacturer.description.name}" /></a></li>
-							              </c:forEach>
-							            </ul>
-							          </div>          
-		          					</c:if>
+									 
+									 
 							</div>
 						</div>
 					</div>

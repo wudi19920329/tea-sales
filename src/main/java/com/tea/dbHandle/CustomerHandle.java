@@ -52,6 +52,15 @@ public class CustomerHandle {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public Customer queryByName(String nickName) {
+		String sql = "select * from t_customer t WHERE t.nick_name = ?";
+		try {
+			return qr.query(sql, new BeanHandler<Customer>(Customer.class), nickName);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public Customer queryByEmail(String email) {
 		String sql = "SELECT id,real_name as realName,nick_name as nickName,phone,address,postcode,email,password FROM t_customer WHERE email=?";

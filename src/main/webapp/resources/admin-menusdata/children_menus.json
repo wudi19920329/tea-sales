@@ -14,5 +14,21 @@
         "state": "colsed", 
         "ck": false, 
         "children": [ ]
+    },
+     {
+        "id": 3, 
+        "parentId": 1, 
+        "seq": null, 
+        "iconUrl": "", 
+        "menuName": "订单管理", 
+        "src": "/pages/admin/menu/orderConfig/index.jsp", 
+        "levelNum": 2, 
+        "isLeaf": true, 
+        "nodePath": null, 
+        "remark": "", 
+        "type": 1, 
+        "state": "colsed", 
+        "ck": false, 
+        "children": [ ]
     }
 ]

@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tea.Constants;
 import com.tea.enums.ExpressDeliveryMode;
 import com.tea.enums.OrderStatus;
@@ -17,6 +18,7 @@ public class Order {
 	private OrderStatus orderStatus = OrderStatus.WAIT_FOR_DELIVERY;
 	private ExpressDeliveryMode expressDeliveryMode;// 配送方式
 	private String description;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	private Date updateTime;
 	private String orderNumber;

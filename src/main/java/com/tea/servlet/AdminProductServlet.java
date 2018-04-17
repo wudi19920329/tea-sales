@@ -97,9 +97,13 @@ public class AdminProductServlet extends BaseServlet {
 		Long inventory = Long.valueOf(request.getParameter("inventory"));
 		Specification specification = Specification.valueOf(request.getParameter("specification"));
 		BigDecimal price = new BigDecimal(request.getParameter("price"));
-		BigDecimal discountPrice = new BigDecimal(StringUtils.isBlank(request.getParameter("discountPrice")) ? "0.00"
-				: request.getParameter("discountPrice"));
-		Boolean discounted = Boolean.valueOf(request.getParameter("discounted"));
+		BigDecimal discountPrice = BigDecimal.ZERO;
+		Boolean discounted = Boolean.FALSE;
+		if("1".equals(request.getParameter("discounted"))){
+			discounted = Boolean.TRUE;
+			discountPrice = new BigDecimal(StringUtils.isBlank(request.getParameter("discountPrice")) ? "0.00"
+					: request.getParameter("discountPrice"));
+		}
 		String content = request.getParameter("content");
 		Product product = productHandle.queryById(productId);
 		product.setImage(image);

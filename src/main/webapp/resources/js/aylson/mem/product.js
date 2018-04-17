@@ -297,14 +297,14 @@
 	
 	
 	//搜索
-	function doSearch(method){
-		$("#datagrid").datagrid("load",serializeObject($("#giftConfigSearchForm")));
+	function doSearch(){
+		$("#datagrid").datagrid("load",serializeObject($("#productConfigSearchForm")));
 	}
 	
 	
 	//重置
 	function reset(){
-		$("#giftConfigSearchForm").form("reset");
+		$("#productConfigSearchForm").form("reset");
 	}
 	
 	

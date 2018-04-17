@@ -106,6 +106,7 @@ text-align:left!important;
 						data-options="panelHeight:'auto',onSelect:function(record){
 								if(record.value == 1){
 									$('#discountPriceTr').show();
+									
 								}else{
 									$('#discountPriceTr').hide();
 								}
@@ -127,15 +128,15 @@ text-align:left!important;
 					</td>
 				</tr>
 				
-				<c:if test="${requestScope.product.discounted}">
-					<tr id="discountPriceTr" >
-						<th>折后价：</th>
-						<td class="basic_td"><input name="discountPrice"  value="${requestScope.product.discountPrice}"
-							class="easyui-textbox" 
-							style="width: 200px;" />
-						</td>
-					</tr>
-				</c:if>
+				
+				<tr id="discountPriceTr" style="${requestScope.product.discounted?'':'display:none'}">
+					<th>折后价：</th>
+					<td class="basic_td"><input name="discountPrice"  value="${requestScope.product.discountPrice}"
+						class="easyui-textbox" 
+						style="width: 200px;" />
+					</td>
+				</tr>	
+				
 				
 				<tr>
 					<th>说明：</th>
