@@ -43,7 +43,13 @@
 									</div>	
 									<div class="cart-content">
 											<h4><a href="#">{{quantity}} x {{product.name}}</a></h4>
-											<span class="cart-price">￥{{product.price}}</span>
+											<span class="cart-price">
+												{{#product.discounted}}<del>￥{{product.price}}</del>&nbsp;<span itemprop="price" class="specialPrice">￥{{product.discountPrice}}</span>{{/product.discounted}}
+												{{^product.discounted}}<span itemprop="price">￥{{product.price}}</span>{{/product.discounted}}
+											</span>
+
+											 
+										
 									</div>
 									<div class="cart-del">
 											<button productid="{{productId}}" class="close removeProductIcon" onclick="removeItemFromMinicart('{{id}}')"><i class="fa fa-times-circle"></i></a>

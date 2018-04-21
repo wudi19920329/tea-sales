@@ -133,10 +133,10 @@ response.setDateHeader ("Expires", -1);
 																	</td>
 		
 																	<td
-																		data-th="价格"><strong>￥${shoppingCartItem.product.price}</strong></td>
+																		data-th="价格"><strong>￥${shoppingCartItem.product.discounted?shoppingCartItem.product.discountPrice:shoppingCartItem.product.price}</strong></td>
 																	<td
 																		data-th="共计"
-																		class=""><strong>￥${shoppingCartItem.product.price * shoppingCartItem.quantity}</strong></td>
+																		class=""><strong>￥${(shoppingCartItem.product.discounted?shoppingCartItem.product.discountPrice:shoppingCartItem.product.price) * shoppingCartItem.quantity}</strong></td>
 		
 																	<td width="10%" class="actions" data-th="">
 																		<div class="cart-del">

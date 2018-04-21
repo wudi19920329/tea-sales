@@ -3,6 +3,7 @@ package com.tea.servlet;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
+import com.tea.dto.ProductInfo;
 import com.tea.entity.Customer;
 import com.tea.entity.Order;
 import com.tea.entity.Product;
-import com.tea.entity.ShoppingCartItem;
 import com.tea.enums.OrderStatus;
 import com.tea.utils.PageBean;
 
@@ -32,6 +34,12 @@ public class AdminOrderServlet extends BaseServlet {
 		pages.setCurrentPage(currentPage);
 
 		String nickName = request.getParameter("customerName");
+		@SuppressWarnings("unused")
+		OrderStatus orderStatus = null;
+		if(StringUtils.isNoneBlank(request.getParameter("orderStatus"))) {
+			orderStatus = OrderStatus.valueOf(request.getParameter("orderStatus"));
+		}
+		
 		Integer customerId = null;
 		if (StringUtils.isNoneBlank(nickName)) {
 			Customer customer = customerHandle.queryByName(nickName);
@@ -41,35 +49,35 @@ public class AdminOrderServlet extends BaseServlet {
 			}
 			customerId = customer.getId();
 		}
-		orderHandle.queryPageByCustomerId(pages, customerId);
+		orderHandle.queryPageBy(pages, customerId , orderStatus);
 		return pages;
 	}
-
-	public Object queryProduct(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		Integer productId = Integer.valueOf(request.getParameter("productId"));
-		Product product = productHandle.queryById(productId);
-		request.setAttribute("product", product);
-		// 跳转
-		return request.getRequestDispatcher("/pages/admin/menu/productConfig/view.jsp");
-	}
-
-	public void deliver(HttpServletRequest request, HttpServletResponse response)
+	
+	public Object queryProductsBy(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Integer orderId = Integer.valueOf(request.getParameter("orderId"));
+		List<ProductInfo> infos = productHandle.queryProductInfosBy(orderId);
+		request.setAttribute("products", infos);
+		// 跳转
+		return request.getRequestDispatcher("/pages/admin/menu/orderConfig/view.jsp");
+	}
+
+	public void deliver(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		Integer orderId = Integer.valueOf(request.getParameter("orderId"));
 		Order order = orderHandle.queryById(orderId);
+		
+
+		// 更新产品库存
+		List<Pair<Integer, Integer>> pairs = orderHandle.queryWithProductInfos(orderId);
+		pairs.forEach(productInfo -> {
+			Product product = productHandle.queryById(productInfo.getLeft());
+			product.setInventory(product.getInventory() - productInfo.getRight());
+			productHandle.update(product);
+		});
+		// 更新订单状态
 		order.setOrderStatus(OrderStatus.DELIVERED);
 		orderHandle.update(order);
-		Integer customerId = order.getCustomer().getId();
-		PageBean<ShoppingCartItem> pb = new PageBean<ShoppingCartItem>();
-		pb.setCurrentPage(1);
-		pb.setPageCount(99999);
-		PageBean<ShoppingCartItem> pages = shoppingCartItemHandle.queryPageByCustomerId(pb, customerId);
-		pages.getRows().forEach(page -> {
-			Integer productId = page.getProduct().getId();
-			Product product = productHandle.queryById(productId);
-			productHandle.update(product);// 批量更新库存
-		});
 	}
 
 }

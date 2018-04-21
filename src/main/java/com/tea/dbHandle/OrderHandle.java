@@ -10,6 +10,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.tea.entity.Customer;
 import com.tea.entity.Order;
@@ -48,32 +49,48 @@ public class OrderHandle {
 	}
 
 	public Order queryById(Integer id) {
-		String sql = "select * from t_orders t WHERE t.id = ?";
+		String sql = "select id,order_number orderNumber,customer_id customerId,payable_amount payableAmount,shopping_cart_id shoppingCartId,order_status orderStatus,express_delivery_mode expressDeliveryMode,description,create_time createTime,update_time updateTime from t_order o WHERE o.id = ?";
 		try {
-			return qr.query(sql, new BeanHandler<Order>(Order.class), new ResultSetHandler<Order>() {
+			return qr.query(sql, new BeanHandler<Order>(Order.class), id);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	public List<Pair<Integer, Integer>> queryWithProductInfos(Integer id) {
+		String sql =	"SELECT\r\n" + 
+						"	p.id productId,\r\n" + 
+						"	sci.quantity\r\n" + 
+						"FROM\r\n" + 
+						"	t_order o\r\n" + 
+						"JOIN t_shopping_cart sc ON sc.id = o.shopping_cart_id\r\n" + 
+						"JOIN t_shopping_cart_item sci ON sci.shopping_cart_id = sc.id\r\n" + 
+						"JOIN t_product p ON p.id = sci.product_id\r\n" + 
+						"WHERE\r\n" + 
+						"	o.id = ?\r\n" + 
+						"AND o.order_status = 'WAIT_FOR_DELIVERY'\r\n" + 
+						"AND sc.`status` = 'HAVE_ALREADY_SETTLED'\r\n" + 
+						"AND sci.`status` = 'PAYMENT_HAS_BEEN'";
+		try {
+			return qr.query(sql, new ResultSetHandler<List<Pair<Integer, Integer>>>() {
+				final List<Pair<Integer, Integer>> ORDERS_PAIR = new ArrayList<Pair<Integer, Integer>>();
 				@Override
-				public Order handle(ResultSet rs) throws SQLException {
-					Order order = new Order();
-					order.setId(rs.getInt("id"));
-					ShoppingCart shoppingCart = new ShoppingCart();
-					shoppingCart.setId(rs.getInt("shopping_cart_id"));
-					Customer customer = new Customer();
-					customer.setId(rs.getInt("customer_id"));
-					order.setDescription(rs.getString("description"));
-					order.setExpressDeliveryMode(ExpressDeliveryMode.valueOf(rs.getString("express_delivery_mode")));
-					order.setId(rs.getInt("id"));
-					order.setOrderNumber(rs.getString("order_number"));
-					order.setOrderStatus(OrderStatus.valueOf(rs.getString("order_status")));
-					order.setPayableAmount(rs.getBigDecimal("payable_amount"));
-					order.setShoppingCart(new ShoppingCart());
-					order.setUpdateTime(rs.getDate("update_time"));
-					return order;
+				public List<Pair<Integer, Integer>> handle(ResultSet rs) throws SQLException {
+					while (rs.next()) {
+						ORDERS_PAIR.add(Pair.of(rs.getInt("productId"), rs.getInt("quantity")));
+					}
+					return ORDERS_PAIR;
 				}
+				
 			}, id);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
+	
 
 	public void delete(Integer id) {
 		String sql = "DELETE FROM t_orders WHERE id=?";
@@ -84,8 +101,8 @@ public class OrderHandle {
 		}
 	}
 
-	public PageBean<Order> queryPageByCustomerId(PageBean<Order> pb, Integer customerId) {
-		int totalCount = this.getTotalCountBy(customerId);
+	public PageBean<Order> queryPageBy(PageBean<Order> pb, Integer customerId,OrderStatus orderStatus) {
+		int totalCount = this.getTotalCountBy(customerId,orderStatus);
 		pb.setTotal(totalCount);
 		List<Object> params = new ArrayList<Object>();
 		if (pb.getCurrentPage() <= 0) {
@@ -104,6 +121,11 @@ public class OrderHandle {
 		if (customerId != null) {
 			sql.append("  AND c.id = ? ");
 			params.add(customerId);
+		}
+		// 判断
+		if (orderStatus != null) {
+			sql.append("  AND o.order_status = ? ");
+			params.add(orderStatus.name());
 		}
 		sql.append(" limit ?,? ");
 		params.add(index);
@@ -148,7 +170,7 @@ public class OrderHandle {
 
 	}
 
-	public int getTotalCountBy(Integer customerId) {
+	public int getTotalCountBy(Integer customerId,OrderStatus orderStatus) {
 		StringBuffer sql = new StringBuffer(
 				"select count(1) from t_order o join t_customer c on c.id = o.customer_id  ");
 		List<Object> list = new ArrayList<Object>();
@@ -156,6 +178,11 @@ public class OrderHandle {
 		if (customerId != null) {
 			sql.append("  AND c.id = ? ");
 			list.add(customerId);
+		}
+		// 判断
+		if (orderStatus != null) {
+			sql.append("  AND o.order_status = ? ");
+			list.add(orderStatus.name());
 		}
 		try {
 			// 执行查询， 返回结果的第一行的第一列

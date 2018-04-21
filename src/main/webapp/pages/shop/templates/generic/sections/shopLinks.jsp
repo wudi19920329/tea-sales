@@ -66,7 +66,7 @@
 				</td>
 				<td>{{quantity}}</td>
 				<td>{{name}}</td>
-				<td>{{price}}</td>
+				<td>{{discounted?discountPrice:price}}</td>
 				<td><button productid="{{productId}}" class="close removeProductIcon" onclick="removeItemFromMinicart('{{id}}')">x</button></td>
 			</tr>
 		{{/shoppingCartItems}}

@@ -52,6 +52,7 @@ public class CustomerHandle {
 			throw new RuntimeException(e);
 		}
 	}
+
 	
 	public Customer queryByName(String nickName) {
 		String sql = "select * from t_customer t WHERE t.nick_name = ?";

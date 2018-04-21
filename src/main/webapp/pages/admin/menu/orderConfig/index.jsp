@@ -25,7 +25,17 @@
 					<tr>
 						<td class="tar" >客户昵称：</td>
 						<td class="tal" >
-							<input class="easyui-textbox" name="customerName" prompt="模糊查询"/>
+							<input class="easyui-textbox" name="customerName" prompt="精确查询"/>
+						</td>
+						<td class="tar" >状态：</td>
+						<td class="tal">
+							<select name="orderStatus" class="easyui-combobox" data-options="panelHeight:'auto'"  editable="false">
+								<option value="">全部</option> 
+								<c:set var="orderStatus" value="<%=com.tea.enums.OrderStatus.values()%>"/>
+								<c:forEach var="status" items="${orderStatus}">
+									<option value="${status.getName()}" >${status.getDescription() }</option>			
+								</c:forEach>
+							</select>
 						</td>
 					    <td style="padding-left:20px">
 							<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>

@@ -9,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.tea.Constants;
 import com.tea.entity.Customer;
-import com.tea.entity.ShoppingCart;
-import com.tea.entity.User;
 import com.tea.exception.ServiceException;
 import com.tea.utils.MD5;
 
@@ -62,12 +60,8 @@ public class CustomerServlet extends BaseServlet {
 		}
 		customer = new Customer(realName, phone, address, postcode, email, password, nickName);
 		customerHandle.insert(customer);
-
+		
 		Customer u = customerHandle.queryByEmail(email);
-		// 创建购物车
-		ShoppingCart shoppingCart = new ShoppingCart(u);
-		shoppingCartHandle.insert(shoppingCart);
-
 		request.getSession().setAttribute(Constants.TEA_CUSTOMER, u);
 	}
 

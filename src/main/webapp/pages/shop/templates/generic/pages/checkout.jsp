@@ -221,7 +221,7 @@
 													class="product-quantity"> x
 														${shoppingCartItem.quantity}</strong>
 												</td>
-												<td class="product-total"><span class="amount">￥${shoppingCartItem.product.price * shoppingCartItem.quantity}</span>
+												<td class="product-total"><span class="amount">￥${(shoppingCartItem.product.discounted?shoppingCartItem.product.discountPrice:shoppingCartItem.product.price) * shoppingCartItem.quantity}</span>
 												</td>
 											</tr>
 										</c:forEach>

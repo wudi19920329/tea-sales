@@ -27,7 +27,7 @@ response.setDateHeader ("Expires", -1);
 													</h4>
 													<br>
 													<h5>
-														<a href="<c:url value="/shop/product/" /><c:out value="${product.description.friendlyUrl}"/>.html<sm:breadcrumbParam productId="${product.id}"/>">详情</a> <c:choose><c:when test="${requestScope.FEATURED==true}"><c:if test="${requestScope.CONFIGS['displayAddToCartOnFeaturedItems']==true}">/ <a class="addToCart" href="#" productId="${product.id}">添加到购物车</a></c:if></c:when><c:otherwise>/ <a class="addToCart" href="#" productId="${product.id}">添加到购物车</a></c:otherwise></c:choose>
+														<a href="javascript:void(0);">详情</a> <c:choose><c:when test="${requestScope.FEATURED==true}"><c:if test="${requestScope.CONFIGS['displayAddToCartOnFeaturedItems']==true}">/ <a class="addToCart" href="#" productId="${product.id}">添加到购物车</a></c:if></c:when><c:otherwise>/ <a class="addToCart" href="#" productId="${product.id}">添加到购物车</a></c:otherwise></c:choose>
 													</h5>
 												</div>
 										</div>

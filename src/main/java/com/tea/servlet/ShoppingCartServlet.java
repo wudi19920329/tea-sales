@@ -50,9 +50,12 @@ public class ShoppingCartServlet extends BaseServlet {
 		Integer productId = Integer.valueOf(request.getParameter("productId"));
 		Integer quantity = Integer.valueOf(request.getParameter("quantity"));
 		Product product = productHandle.queryById(productId);
-		ShoppingCart shoppingCart = shoppingCartHandle.queryByCustomerId(Integer.valueOf(customer.getId()));
+		ShoppingCart shoppingCart = shoppingCartHandle.queryNoSettlementByCustomerId(Integer.valueOf(customer.getId()));
 		if (shoppingCart == null) {
-			throw new ServiceException("用户购物车信息异常");
+			// 创建购物车
+			shoppingCart = new ShoppingCart(customer);
+			shoppingCartHandle.insert(shoppingCart);
+			shoppingCart = shoppingCartHandle.queryNoSettlementByCustomerId(Integer.valueOf(customer.getId()));
 		}
 		// 购物车中没有该产品，则创建新的购物车商品
 		ShoppingCartItem shoppingCartItem = shoppingCartItemHandle.queryNotPayingBy(productId, shoppingCart.getId());
@@ -102,7 +105,9 @@ public class ShoppingCartServlet extends BaseServlet {
 		shoppingCartItemHandle.queryPageByCustomerId(pages, Integer.valueOf(customerId));
 		if (pages.getRows() != null && pages.getRows().size() > 0) {
 			pages.setSubTotalPrice(pages.getRows().stream().map(item -> {
-				return item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity()));
+				return item.getProduct().isDiscounted()
+						? item.getProduct().getDiscountPrice().multiply(new BigDecimal(item.getQuantity()))
+						: item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity()));
 			}).reduce(BigDecimal.ZERO, BigDecimal::add));
 
 			pages.setSubTotalCount(pages.getRows().stream().map(item -> {

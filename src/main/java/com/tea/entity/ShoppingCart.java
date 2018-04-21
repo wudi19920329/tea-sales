@@ -2,6 +2,8 @@ package com.tea.entity;
 
 import java.util.Date;
 
+import com.tea.enums.ShoppingCartStatus;
+
 /**
  * 购物车
  * 
@@ -13,6 +15,7 @@ public class ShoppingCart {
 	private Customer customer;// 客户
 	private Date createTime;// 创建时间
 	private Date updateTime;// 更新时间
+	private ShoppingCartStatus status = ShoppingCartStatus.NO_SETTLEMENT;
 
 	public ShoppingCart() {
 		super();
@@ -55,6 +58,14 @@ public class ShoppingCart {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public ShoppingCartStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ShoppingCartStatus status) {
+		this.status = status;
 	}
 
 }

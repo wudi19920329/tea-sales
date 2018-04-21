@@ -29,7 +29,7 @@
 						</td>
 						<td class="tar" >类别：</td>
 						<td class="tal">
-							<select name="category" class="easyui-combobox"  editable="false">
+							<select name="category" class="easyui-combobox"  data-options="panelHeight:'auto'" editable="false">
 								<option value="">全部</option> 
 								<c:set var="categorys" value="<%=com.tea.enums.Category.values()%>"/>
 								<c:forEach var="category" items="${categorys}">

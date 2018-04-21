@@ -125,14 +125,14 @@
 	}
 	
 	//查看
-	function view(sid){
+	function view(orderId){
 		win = $("<div></div>").dialog({
 			title:'查看',
 			width:700,
 			height:400,
 			maximizable:true,
 			modal:true,
-			href:'/admin/product?method=queryProduct&adminIgnoreAjaxHeader=false&productId='+sid,
+			href:'/admin/order?method=queryProductsBy&adminIgnoreAjaxHeader=false&orderId='+orderId,
 			onClose:function(){
 		    	$(this).dialog("destroy");
 		    },

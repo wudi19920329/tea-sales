@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT, timezone = "Asia/Shanghai")
 public enum OrderStatus {
-	WAIT_FOR_DELIVERY("待发货"), DELIVERED("已发货"), ARRIVAL("已到达");
+	WAIT_FOR_DELIVERY("待发货"), DELIVERED("已发货");
 	private String description;
 	private String name;
 

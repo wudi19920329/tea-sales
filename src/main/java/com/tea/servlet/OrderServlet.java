@@ -12,6 +12,7 @@ import com.tea.entity.ShoppingCart;
 import com.tea.entity.ShoppingCartItem;
 import com.tea.enums.ExpressDeliveryMode;
 import com.tea.enums.ShoppingCartItemStatus;
+import com.tea.enums.ShoppingCartStatus;
 import com.tea.utils.PageBean;
 
 @SuppressWarnings("serial")
@@ -29,7 +30,7 @@ public class OrderServlet extends BaseServlet {
 				.valueOf(request.getParameter("expressDeliveryMode"));
 		BigDecimal payableAmount = new BigDecimal(request.getParameter("payableAmount"));
 
-		ShoppingCart shoppingCart = shoppingCartHandle.queryByCustomerId(customer.getId());
+		ShoppingCart shoppingCart = shoppingCartHandle.queryNoSettlementByCustomerId(customer.getId());
 		// 更新购物车商品的状态
 		PageBean<ShoppingCartItem> carts = (PageBean<ShoppingCartItem>) request.getSession().getAttribute("cart");
 		carts.getRows().forEach(cartItem -> {
@@ -38,6 +39,8 @@ public class OrderServlet extends BaseServlet {
 		});
 		Order order = new Order(customer, payableAmount, shoppingCart, expressDeliveryMode, description);
 		orderHandle.insert(order);
+		shoppingCart.setStatus(ShoppingCartStatus.HAVE_ALREADY_SETTLED);
+		shoppingCartHandle.update(shoppingCart);
 		return order.getOrderNumber();
 	}
 
@@ -46,10 +49,10 @@ public class OrderServlet extends BaseServlet {
 		if (customer == null) {
 			return null;
 		}
-		String page = request.getParameter("page")==null?"1":request.getParameter("page");
+		String page = request.getParameter("page") == null ? "1" : request.getParameter("page");
 		PageBean<Order> pages = new PageBean<Order>();
 		pages.setCurrentPage(Integer.valueOf(page));
-		orderHandle.queryPageByCustomerId(pages, Integer.valueOf(customer.getId()));
+		orderHandle.queryPageBy(pages, Integer.valueOf(customer.getId()),null);
 		request.setAttribute("customerOrders", pages);
 		Object uri = request.getRequestDispatcher("/pages/shop/templates/generic/pages/orders.jsp");
 		return uri;

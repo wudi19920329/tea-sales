@@ -1,18 +1,24 @@
 package com.tea.dbHandle;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.StringUtils;
 
+import com.tea.dto.ProductInfo;
 import com.tea.entity.Product;
 import com.tea.enums.Category;
+import com.tea.enums.ExpressDeliveryMode;
+import com.tea.enums.Specification;
 import com.tea.enums.Status;
 import com.tea.exception.ServiceException;
 import com.tea.utils.JdbcUtils;
@@ -25,8 +31,8 @@ public class ProductHandle {
 	public void insert(Product product) {
 		String sql = " INSERT t_product(name,image,category,inventory,specification,price,content,status,create_time,discount_price,discounted) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 		try {
-			qr.update(sql, product.getName(),product.getImage(), product.getCategory().name(), 
-					product.getInventory(), product.getSpecification().name(), product.getPrice(), product.getContent(),
+			qr.update(sql, product.getName(), product.getImage(), product.getCategory().name(), product.getInventory(),
+					product.getSpecification().name(), product.getPrice(), product.getContent(),
 					product.getStatus().name(), product.getCreateTime(), product.getDiscountPrice(),
 					product.isDiscounted());
 		} catch (Exception e) {
@@ -46,8 +52,8 @@ public class ProductHandle {
 	public void update(Product product) {
 		String sql = "UPDATE t_product SET image=?,category=?,name=?,inventory=?,specification=?,price=?,content=?,status=?,create_time=?,discount_price=?,discounted=? WHERE id =?";
 		try {
-			qr.update(sql, product.getImage(), product.getCategory().name(), product.getName(),
-					product.getInventory(), product.getSpecification().name(), product.getPrice(), product.getContent(),
+			qr.update(sql, product.getImage(), product.getCategory().name(), product.getName(), product.getInventory(),
+					product.getSpecification().name(), product.getPrice(), product.getContent(),
 					product.getStatus().name(), product.getCreateTime(), product.getDiscountPrice(),
 					product.isDiscounted(), product.getId());
 		} catch (Exception e) {
@@ -82,6 +88,60 @@ public class ProductHandle {
 		}
 	}
 
+	public List<ProductInfo> queryProductInfosBy(Integer orderId) {
+		String sql =	"SELECT\r\n" + 
+						"	p.id productId,\r\n" + 
+						"	p.image,\r\n" + 
+						"	p.`name`,\r\n" + 
+						"	p.specification,\r\n" + 
+						"	p.inventory,\r\n" + 
+						"	p.price,\r\n" + 
+						"	p.discounted,\r\n" + 
+						"	p.discount_price,\r\n" + 
+						"	p.content,\r\n" + 
+						"	p.category,\r\n" + 
+						"	sci.quantity,\r\n" + 
+						"	o.payable_amount,\r\n" + 
+						"	o.express_delivery_mode\r\n" + 
+						"FROM\r\n" + 
+						"	t_order o\r\n" + 
+						"JOIN t_shopping_cart sc ON sc.id = o.shopping_cart_id\r\n" + 
+						"JOIN t_shopping_cart_item sci ON sci.shopping_cart_id = sc.id\r\n" + 
+						"JOIN t_product p ON p.id = sci.product_id\r\n" + 
+						"WHERE\r\n" + 
+						"	o.id = ?\r\n" + 
+						" \r\n" + 
+						"AND sc.`status` = 'HAVE_ALREADY_SETTLED'\r\n" + 
+						"AND sci.`status` = 'PAYMENT_HAS_BEEN';";
+		try {
+			return qr.query(sql, new ResultSetHandler<List<ProductInfo>>() {
+				final List<ProductInfo> PRODUCTINFOS = new ArrayList<ProductInfo>();
+				@Override
+				public List<ProductInfo> handle(ResultSet rs) throws SQLException {
+					while (rs.next()) {
+						ProductInfo info = new ProductInfo();
+						info.setCategory(Category.valueOf(rs.getString("category")));
+						info.setContent(rs.getString("content"));
+						info.setPayableAmount(rs.getBigDecimal("payable_amount"));
+						info.setId(rs.getInt("productId"));
+						info.setImage(rs.getString("image"));
+						info.setInventory(rs.getLong("inventory"));
+						info.setName(rs.getString("name"));
+						info.setSpecification(Specification.valueOf(rs.getString("specification")));
+						info.setQuantity(rs.getInt("quantity"));
+						info.setFinalPrice(rs.getBoolean("discounted")?rs.getBigDecimal("discount_price"):rs.getBigDecimal("price"));
+						info.setExpressDeliveryMode(ExpressDeliveryMode.valueOf(rs.getString("express_delivery_mode")));
+						PRODUCTINFOS.add(info);
+					}
+					return PRODUCTINFOS;
+				}
+				
+			}, orderId);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public List<Product> queryByCategory(Category category) {
 		try {
 			String sql = "SELECT * FROM t_product WHERE category =?";
@@ -91,8 +151,8 @@ public class ProductHandle {
 		}
 	}
 
-	public PageBean<Product> queryPageByCategory(PageBean<Product> pb, Category category,String name , Status status) {
-		int totalCount = this.getTotalCountBy(category,name,status);
+	public PageBean<Product> queryPageByCategory(PageBean<Product> pb, Category category, String name, Status status) {
+		int totalCount = this.getTotalCountBy(category, name, status);
 		pb.setTotal(totalCount);
 
 		List<Object> list = new ArrayList<Object>();
@@ -134,15 +194,15 @@ public class ProductHandle {
 			sb.append("  AND p.name like ? ");
 			list.add(MessageFormat.format("%{0}%", name));
 		}
-		if (status!=null) {
+		if (status != null) {
 			sb.append("  AND p.status = ? ");
 			list.add(status.name());
 		}
-		
+
 		sb.append(" limit ?,? ");
 		list.add(index);
 		list.add(count);
-	
+
 		try {
 			// 根据当前页，查询当前页数据(一页数据)
 			if (index >= 0) {
@@ -151,7 +211,7 @@ public class ProductHandle {
 				// 设置到pb对象中
 				pb.setRows(pageData);
 				return pb;
-			}else{
+			} else {
 				pb.setRows(Arrays.asList());
 			}
 
@@ -162,7 +222,7 @@ public class ProductHandle {
 
 	}
 
-	public int getTotalCountBy(Category category,String name,Status status) {
+	public int getTotalCountBy(Category category, String name, Status status) {
 		StringBuilder sb = new StringBuilder();
 		List<Object> list = new ArrayList<Object>();
 		sb.append(" SELECT");
@@ -178,7 +238,7 @@ public class ProductHandle {
 			sb.append("  AND p.name like ? ");
 			list.add(MessageFormat.format("%{0}%", name));
 		}
-		if (status!=null) {
+		if (status != null) {
 			sb.append("  AND p.status = ? ");
 			list.add(status.name());
 		}

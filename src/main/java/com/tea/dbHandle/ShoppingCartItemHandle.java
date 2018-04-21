@@ -107,7 +107,9 @@ public class ShoppingCartItemHandle {
 				+ "	p.name,                                            		\n"
 				+ "	sc.id shoppingCartId,                                   \n"
 				+ "	sci.quantity quantity,                                  \n"
-				+ "	sci.id shoppingCartItemId                               \n"
+				+ "	sci.id shoppingCartItemId,                               \n"
+				+ "	p.discount_price,                               	\n"
+				+ "	p.discounted                               		\n"
 				+ "FROM                                                     \n"
 				+ "	t_shopping_cart_item sci                                \n"
 				+ "	JOIN t_product p on p.id = sci.product_id               \n"
@@ -131,6 +133,8 @@ public class ShoppingCartItemHandle {
 							product.setCategory(Category.valueOf(rs.getString("category")));
 							product.setImage(rs.getString("image"));
 							product.setPrice(rs.getBigDecimal("price"));
+							product.setDiscountPrice(rs.getBigDecimal("discount_price"));
+							product.setDiscounted(rs.getBoolean("discounted"));
 							product.setSpecification(Specification.valueOf(rs.getString("specification")));
 							product.setStatus(Status.valueOf(rs.getString("status")));
 							product.setName(rs.getString("name"));
